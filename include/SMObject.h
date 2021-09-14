@@ -21,6 +21,8 @@ public:
 	~SMObject();
 	int SMCreate();
 	int SMAccess();
+	void SMObject::SetSzname(TCHAR* szname);
+	void SMObject::SetSize(int size);
 };
 #endif
 
