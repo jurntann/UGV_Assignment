@@ -62,7 +62,6 @@ void StartProcesses()
 {
 	STARTUPINFO s[10];
 	PROCESS_INFORMATION p[10];
-
 	for (int i = 0; i < NUM_UNITS; i++)
 	{
 		if (!IsProcessRunning((const char *)Units[i]))
@@ -70,7 +69,7 @@ void StartProcesses()
 			ZeroMemory(&s[i], sizeof(s[i]));
 			s[i].cb = sizeof(s[i]);
 			ZeroMemory(&p[i], sizeof(p[i]));
-
+			std::cout << "ayo" << std::endl;
 			if (!CreateProcess(NULL, Units[i], NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &s[i], &p[i]))
 			{
 				printf("%s failed (%d).\n", Units[i], GetLastError());
