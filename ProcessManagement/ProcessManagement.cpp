@@ -35,8 +35,6 @@ int main()
 {
 	//start all 5 modules
 	StartProcesses();
-	std::cout << "hi" << std::endl;
-	_getch();
 	return 0;
 }
 
@@ -66,7 +64,6 @@ void StartProcesses()
 	PROCESS_INFORMATION p[10];
 	for (int i = 0; i < NUM_UNITS; i++)
 	{
-		std::cout << "ayo" << std::endl;
 		if (!IsProcessRunning((const char *)Units[i]))
 		{
 			ZeroMemory(&s[i], sizeof(s[i]));
