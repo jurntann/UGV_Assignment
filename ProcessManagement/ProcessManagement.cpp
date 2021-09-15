@@ -35,6 +35,8 @@ int main()
 {
 	//start all 5 modules
 	StartProcesses();
+	std::cout << "hi" << std::endl;
+	_getch();
 	return 0;
 }
 
@@ -50,7 +52,7 @@ bool IsProcessRunning(const char* processName)
 
 	if (Process32First(snapshot, &entry))
 		while (Process32Next(snapshot, &entry))
-			if (!_stricmp((const char *)entry.szExeFile, processName))
+			if (!_stricmp((const char*)entry.szExeFile, processName))
 				exists = true;
 
 	CloseHandle(snapshot);
@@ -64,7 +66,7 @@ void StartProcesses()
 	PROCESS_INFORMATION p[10];
 	for (int i = 0; i < NUM_UNITS; i++)
 	{
-		if (!IsProcessRunning((const char *)Units[i]))
+		if (!IsProcessRunning((const char*)Units[i]))
 		{
 			ZeroMemory(&s[i], sizeof(s[i]));
 			s[i].cb = sizeof(s[i]);
