@@ -52,7 +52,7 @@ bool IsProcessRunning(const char* processName)
 
 	if (Process32First(snapshot, &entry))
 		while (Process32Next(snapshot, &entry))
-			if (!_stricmp((const char*)entry.szExeFile, processName))
+			if (!_stricmp((const char *)entry.szExeFile, processName))
 				exists = true;
 
 	CloseHandle(snapshot);
@@ -66,12 +66,13 @@ void StartProcesses()
 	PROCESS_INFORMATION p[10];
 	for (int i = 0; i < NUM_UNITS; i++)
 	{
-		if (!IsProcessRunning((const char*)Units[i]))
+		std::cout << "ayo" << std::endl;
+		if (!IsProcessRunning((const char *)Units[i]))
 		{
 			ZeroMemory(&s[i], sizeof(s[i]));
 			s[i].cb = sizeof(s[i]);
 			ZeroMemory(&p[i], sizeof(p[i]));
-			std::cout << "ayo" << std::endl;
+			
 			if (!CreateProcess(NULL, Units[i], NULL, NULL, FALSE, CREATE_NEW_CONSOLE, NULL, NULL, &s[i], &p[i]))
 			{
 				printf("%s failed (%d).\n", Units[i], GetLastError());
