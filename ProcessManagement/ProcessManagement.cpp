@@ -14,6 +14,8 @@ using namespace System;
 using namespace System::Net::Sockets;
 using namespace System::Net;
 using namespace System::Text;
+using namespace System::Threading;
+using namespace System::Diagnostics;
 
 #define NUM_UNITS 3
 
@@ -33,8 +35,19 @@ TCHAR Units[10][20] = //
 
 int main()
 {
+	// Declare an SM Object instance
+	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
+	// SM Creation and seeking access
+	PMObj.SMCreate();
+	PMObj.SMAccess();
+	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
 	//start all 5 modules
 	StartProcesses();
+	while (!_kbhit()) {
+		Thread::Sleep(1000);
+	}
+	PMData->Shutdown.Status = 0xFF;
+	Console::ReadKey();
 	return 0;
 }
 

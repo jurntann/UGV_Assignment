@@ -11,6 +11,9 @@
 
 #include <turbojpeg.h>
 
+#include "SMStructs.h"
+#include "SMObject.h"
+
 void display();
 void idle();
 
@@ -22,6 +25,12 @@ zmq::socket_t subscriber(context, ZMQ_SUB);
 
 int main(int argc, char** argv)
 {
+	// Declare an SM Object instance
+	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
+	// SM Creation and seeking access
+	PMObj.SMCreate();
+	PMObj.SMAccess();
+	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
 	//Define window size
 	const int WINDOW_WIDTH = 800;
 	const int WINDOW_HEIGHT = 600;
@@ -40,9 +49,12 @@ int main(int argc, char** argv)
 	//Socket to talk to server
 	subscriber.connect("tcp://192.168.1.200:26000");
 	subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-
-	glutMainLoop();
-
+	while (1) {
+		glutMainLoop();
+		if (PMData->Shutdown.Status)
+			break;
+	}
+	
 	return 1;
 }
 
