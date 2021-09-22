@@ -45,6 +45,9 @@ int main()
 	StartProcesses();
 	while (!_kbhit()) {
 		Thread::Sleep(1000);
+		std::cout << "GPS heartbeat:" << (int)PMData->Heartbeat.Flags.GPS << std::endl;
+		std::cout << "Camera heartbeat:" << (int)PMData->Heartbeat.Flags.Camera << std::endl;
+		// std::cout << "Laser heartbeat:" << (int)PMData->Heartbeat.Flags.Laser << std::endl;
 	}
 	PMData->Shutdown.Status = 0xFF;
 	Console::ReadKey();

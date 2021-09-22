@@ -38,6 +38,9 @@
 #include "Messages.hpp"
 #include "HUD.hpp"
 
+#include "SMStructs.h"
+#include "SMObject.h"
+
 void display();
 void reshape(int width, int height);
 void idle();
@@ -66,7 +69,12 @@ double steering = 0;
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
-
+	// Declare an SM Object instance
+	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
+	// SM Creation and seeking access
+	PMObj.SMCreate();
+	PMObj.SMAccess();
+	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
 	const int WINDOW_WIDTH = 800;
 	const int WINDOW_HEIGHT = 600;
 
