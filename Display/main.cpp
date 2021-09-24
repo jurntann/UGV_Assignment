@@ -114,7 +114,10 @@ int main(int argc, char ** argv) {
 	if (vehicle != NULL) {
 		delete vehicle;
 	}
-
+	while (1) {
+		if (PMData->Shutdown.Status)
+			break;
+	}
 	return 0;
 }
 

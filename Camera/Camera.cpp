@@ -40,6 +40,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 	glutInitWindowPosition(0, 0);
 	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	std::cout << "ayo" << std::endl;
 	glutCreateWindow("MTRN3500 - Camera");
 
 	glutDisplayFunc(display);
@@ -49,11 +50,10 @@ int main(int argc, char** argv)
 	//Socket to talk to server
 	subscriber.connect("tcp://192.168.1.200:26000");
 	subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-	while (1) {
-		glutMainLoop();
-		if (PMData->Shutdown.Status)
-			break;
+	if (PMData->Shutdown.Status) {
+		exit(0);
 	}
+	glutMainLoop();
 	
 	return 1;
 }
