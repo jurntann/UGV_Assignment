@@ -44,10 +44,23 @@ int main()
 	//start all 5 modules
 	StartProcesses();
 	while (!_kbhit()) {
-		Thread::Sleep(1000);
-		std::cout << "GPS heartbeat:" << (int)PMData->Heartbeat.Flags.GPS << std::endl;
-		std::cout << "Camera heartbeat:" << (int)PMData->Heartbeat.Flags.Camera << std::endl;
-		// std::cout << "Laser heartbeat:" << (int)PMData->Heartbeat.Flags.Laser << std::endl;
+		// set all heartbeats to 0 
+		for (int mask = 0b00000001; mask < 0b00010000 ; mask <<= 1) {
+			// PMData->Heartbeat.Status
+			std::cout << "mask: " << mask << std::endl;
+			if ((PMData->Heartbeat.Status & mask) == mask){ 
+				// perform bitwise AND (&) operation on each bit, if result is 1 then process alive
+				//set each heartbeat to 0 again if the heartbeat is 1
+				std::cout << "heartbeat changed for process" << std::endl;
+			} else {
+				// if bit is 0, then AND operation will return 0 
+				// if critical process(another bitwise mask and operation, shutdown all if not then just restart process
+				// for now default is to shutdown 
+				std::cout << "all processes terminated"<< std::endl;
+				//PMData->Shutdown.Status = 0xFF;
+			}
+		}
+		Thread::Sleep(1000); // allow time for keypress for manual shutdown
 	}
 	PMData->Shutdown.Status = 0xFF;
 	Console::ReadKey();

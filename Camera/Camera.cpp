@@ -28,33 +28,42 @@ int main(int argc, char** argv)
 	// Declare an SM Object instance
 	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
 	// SM Creation and seeking access
-	PMObj.SMCreate();
+	//PMObj.SMCreate();
 	PMObj.SMAccess();
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
-	//Define window size
-	const int WINDOW_WIDTH = 800;
-	const int WINDOW_HEIGHT = 600;
+	while (1) {
+		if (PMData->Heartbeat.Flags.Camera == 0) {
+			// check that heartbeat has been set to 0 by processmanagement
+			// if it has, then set it back to 1 
+			PMData->Heartbeat.Flags.Camera = 1;
+		}
+		else {
+			// if the heartbeat is still 1 
+			// this means processmanagement has dieded and so everything should stop
+			std::cout << "process management is dieded" << std::endl;
+			exit(0);
+		}
+		if (PMData->Shutdown.Status)
+			exit(0);
+		//Define window size
+		const int WINDOW_WIDTH = 800;
+		const int WINDOW_HEIGHT = 600;
+		//GL Window setup
+		glutInit(&argc, (char**)(argv));
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+		glutInitWindowPosition(0, 0);
+		glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		glutCreateWindow("MTRN3500 - Camera");
 
-	//GL Window setup
-	glutInit(&argc, (char**)(argv));
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	std::cout << "ayo" << std::endl;
-	glutCreateWindow("MTRN3500 - Camera");
+		glutDisplayFunc(display);
+		glutIdleFunc(idle);
+		glGenTextures(1, &tex);
 
-	glutDisplayFunc(display);
-	glutIdleFunc(idle);
-	glGenTextures(1, &tex);
-
-	//Socket to talk to server
-	subscriber.connect("tcp://192.168.1.200:26000");
-	subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-	if (PMData->Shutdown.Status) {
-		exit(0);
+		//Socket to talk to server
+		subscriber.connect("tcp://192.168.1.200:26000");
+		subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+		glutMainLoop();
 	}
-	glutMainLoop();
-	
 	return 1;
 }
 

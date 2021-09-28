@@ -72,51 +72,63 @@ int main(int argc, char ** argv) {
 	// Declare an SM Object instance
 	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
 	// SM Creation and seeking access
-	PMObj.SMCreate();
+	//PMObj.SMCreate();
 	PMObj.SMAccess();
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
-	const int WINDOW_WIDTH = 800;
-	const int WINDOW_HEIGHT = 600;
+	while(1){
+		if (PMData->Heartbeat.Flags.Display == 0) {
+			// check that heartbeat has been set to 0 by processmanagement
+			// if it has, then set it back to 1 
+			PMData->Heartbeat.Flags.Display = 1;
+		}
+		else {
+			// if the heartbeat is still 1 
+			// this means processmanagement has dieded and so everything should stop
+			std::cout << "process management is dieded" << std::endl;
+			exit(0);
+		}
 
-	glutInit(&argc, (char**)(argv));
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-	glutInitWindowPosition(0, 0);
-	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-	glutCreateWindow("MTRN3500 - GL");
-
-	Camera::get()->setWindowDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
-
-	glEnable(GL_DEPTH_TEST);
-
-	glutDisplayFunc(display);
-	glutReshapeFunc(reshape);
-	glutIdleFunc(idle);
-
-	glutKeyboardFunc(keydown);
-	glutKeyboardUpFunc(keyup);
-	glutSpecialFunc(special_keydown);
-	glutSpecialUpFunc(special_keyup);
-
-	glutMouseFunc(mouse);
-	glutMotionFunc(dragged);
-	glutPassiveMotionFunc(motion);
-
-	// -------------------------------------------------------------------------
-	// Please uncomment the following line of code and replace 'MyVehicle'
-	//   with the name of the class you want to show as the current 
-	//   custom vehicle.
-	// -------------------------------------------------------------------------
-	vehicle = new MyVehicle();
-
-
-	glutMainLoop();
-
-	if (vehicle != NULL) {
-		delete vehicle;
-	}
-	while (1) {
 		if (PMData->Shutdown.Status)
-			break;
+			exit(0);
+		const int WINDOW_WIDTH = 800;
+		const int WINDOW_HEIGHT = 600;
+
+		glutInit(&argc, (char**)(argv));
+		glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+		glutInitWindowPosition(0, 0);
+		glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		glutCreateWindow("MTRN3500 - GL");
+
+		Camera::get()->setWindowDimensions(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+		glEnable(GL_DEPTH_TEST);
+
+		glutDisplayFunc(display);
+		glutReshapeFunc(reshape);
+		glutIdleFunc(idle);
+
+		glutKeyboardFunc(keydown);
+		glutKeyboardUpFunc(keyup);
+		glutSpecialFunc(special_keydown);
+		glutSpecialUpFunc(special_keyup);
+
+		glutMouseFunc(mouse);
+		glutMotionFunc(dragged);
+		glutPassiveMotionFunc(motion);
+
+		// -------------------------------------------------------------------------
+		// Please uncomment the following line of code and replace 'MyVehicle'
+		//   with the name of the class you want to show as the current 
+		//   custom vehicle.
+		// -------------------------------------------------------------------------
+		vehicle = new MyVehicle();
+
+
+		glutMainLoop();
+
+		if (vehicle != NULL) {
+			delete vehicle;
+		}
 	}
 	return 0;
 }
