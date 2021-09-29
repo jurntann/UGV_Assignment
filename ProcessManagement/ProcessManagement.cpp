@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <conio.h>
-
+#include <array>
 #include "SMStructs.h"
 #include "SMObject.h"
 
@@ -17,7 +17,7 @@ using namespace System::Text;
 using namespace System::Threading;
 using namespace System::Diagnostics;
 
-#define NUM_UNITS 3
+#define NUM_UNITS 4
 
 bool IsProcessRunning(const char* processName);
 void StartProcesses();
@@ -28,9 +28,8 @@ TCHAR Units[10][20] = //
 	TEXT("GPS.exe"),
 	TEXT("Camera.exe"),
 	TEXT("Display.exe"),
-	TEXT("VehicleControl.exe"),
-	TEXT("Laser.exe")
-	
+	TEXT("Laser.exe"),
+	TEXT("VehicleControl.exe")
 };
 
 int main()
@@ -43,22 +42,32 @@ int main()
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
 	//start all 5 modules
 	StartProcesses();
+	// limit before action is taken
+	int LIMIT = 3;
+	// array of counters, if any of the elements reach three then action is taken 
+	std::array<int, 4> counters = { 0,0,0,0 }; //Left to right represents processes gps to laser
 	while (!_kbhit()) {
-		// set all heartbeats to 0 
-		for (int mask = 0b00000001; mask < 0b00010000 ; mask <<= 1) {
+		// reset i everytime to iterate through counters
+		int i = 0;
+		for (int mask = 0b00000001; mask < 0b00010000 ; mask <<= 1) {	
 			// PMData->Heartbeat.Status
 			std::cout << "mask: " << mask << std::endl;
 			if ((PMData->Heartbeat.Status & mask) == mask){ 
 				// perform bitwise AND (&) operation on each bit, if result is 1 then process alive
-				//set each heartbeat to 0 again if the heartbeat is 1
+				//set each heartbeat to 0 again if the heartbeat is 1 
+				PMData->Heartbeat.Status = PMData->Heartbeat.Status ^ mask; // XOR will set the matching 1 and 1 bits to 0, but leave the rest
 				std::cout << "heartbeat changed for process" << std::endl;
 			} else {
 				// if bit is 0, then AND operation will return 0 
-				// if critical process(another bitwise mask and operation, shutdown all if not then just restart process
-				// for now default is to shutdown 
-				std::cout << "all processes terminated"<< std::endl;
-				//PMData->Shutdown.Status = 0xFF;
+				std::cout << counters[i] << std::endl;
+				counters[i]++;
+				if (counters[i] > LIMIT) {
+					// if critical process(another bitwise mask and operation, shutdown all if not then just restart process [TODO]
+					// for now default is to shutdown 
+					std::cout << "limit reached, terminating program" << std::endl;
+				}
 			}
+			i++;
 		}
 		Thread::Sleep(1000); // allow time for keypress for manual shutdown
 	}

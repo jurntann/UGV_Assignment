@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Camera", "Camera\Camera.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Display", "Display\Display.vcxproj", "{7DC9551E-72DB-4AF5-AB30-9F02EA428283}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Laser", "Laser\Laser.vcxproj", "{613A2E21-9397-4A01-842B-772871F1787E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,14 @@ Global
 		{7DC9551E-72DB-4AF5-AB30-9F02EA428283}.Release|x64.Build.0 = Release|x64
 		{7DC9551E-72DB-4AF5-AB30-9F02EA428283}.Release|x86.ActiveCfg = Release|Win32
 		{7DC9551E-72DB-4AF5-AB30-9F02EA428283}.Release|x86.Build.0 = Release|Win32
+		{613A2E21-9397-4A01-842B-772871F1787E}.Debug|x64.ActiveCfg = Debug|x64
+		{613A2E21-9397-4A01-842B-772871F1787E}.Debug|x64.Build.0 = Debug|x64
+		{613A2E21-9397-4A01-842B-772871F1787E}.Debug|x86.ActiveCfg = Debug|Win32
+		{613A2E21-9397-4A01-842B-772871F1787E}.Debug|x86.Build.0 = Debug|Win32
+		{613A2E21-9397-4A01-842B-772871F1787E}.Release|x64.ActiveCfg = Release|x64
+		{613A2E21-9397-4A01-842B-772871F1787E}.Release|x64.Build.0 = Release|x64
+		{613A2E21-9397-4A01-842B-772871F1787E}.Release|x86.ActiveCfg = Release|Win32
+		{613A2E21-9397-4A01-842B-772871F1787E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

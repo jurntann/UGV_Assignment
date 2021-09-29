@@ -1,4 +1,4 @@
-#include"GPS.h"
+#include "Laser.h"
 
 int main() {
 	// Declare an SM Object instance
@@ -8,11 +8,12 @@ int main() {
 	PMObj.SMAccess();
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
 	while (1) {
-		if (PMData->Heartbeat.Flags.GPS == 0) {
+		if (PMData->Heartbeat.Flags.Laser== 0) {
 			// check that heartbeat has been set to 0 by processmanagement
 			// if it has, then set it back to 1 
-			PMData->Heartbeat.Flags.GPS = 1;
-		} else {
+			PMData->Heartbeat.Flags.Laser = 1;
+		}
+		else {
 			// if the heartbeat is still 1 
 			// this means processmanagement has dieded and so everything should stop
 			std::cout << "process management is dieded" << std::endl;
@@ -23,3 +24,4 @@ int main() {
 	}
 	return 0;
 }
+
