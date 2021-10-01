@@ -1,4 +1,13 @@
 #include "Laser.h"
+using namespace System;
+using namespace Net;
+using namespace Sockets;
+using namespace Text;
+using namespace System::Net::Sockets;
+using namespace System::Net;
+using namespace System::Text;
+using namespace System::Threading;
+using namespace System::Diagnostics;
 
 int main() {
 	// Declare an SM Object instance
@@ -21,6 +30,7 @@ int main() {
 		}
 		if (PMData->Shutdown.Status)
 			break;
+		Thread::Sleep(1000);
 	}
 	return 0;
 }

@@ -1,4 +1,10 @@
 #include"GPS.h"
+using namespace System;
+using namespace System::Net::Sockets;
+using namespace System::Net;
+using namespace System::Text;
+using namespace System::Threading;
+using namespace System::Diagnostics;
 
 int main() {
 	// Declare an SM Object instance
@@ -20,6 +26,7 @@ int main() {
 		}
 		if (PMData->Shutdown.Status)
 			break;
+		Thread::Sleep(1000);
 	}
 	return 0;
 }

@@ -13,9 +13,18 @@
 
 #include "SMStructs.h"
 #include "SMObject.h"
+using namespace System;
+using namespace System::Net::Sockets;
+using namespace System::Net;
+using namespace System::Text;
+using namespace System::Threading;
+using namespace System::Diagnostics;
 
 void display();
 void idle();
+
+// Global variables
+ProcessManagement* camhb;
 
 GLuint tex;
 
@@ -28,42 +37,28 @@ int main(int argc, char** argv)
 	// Declare an SM Object instance
 	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
 	// SM Creation and seeking access
-	//PMObj.SMCreate();
+	PMObj.SMCreate();
 	PMObj.SMAccess();
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
-	while (1) {
-		if (PMData->Heartbeat.Flags.Camera == 0) {
-			// check that heartbeat has been set to 0 by processmanagement
-			// if it has, then set it back to 1 
-			PMData->Heartbeat.Flags.Camera = 1;
-		}
-		else {
-			// if the heartbeat is still 1 
-			// this means processmanagement has dieded and so everything should stop
-			std::cout << "process management is dieded" << std::endl;
-			exit(0);
-		}
-		if (PMData->Shutdown.Status)
-			exit(0);
-		//Define window size
-		const int WINDOW_WIDTH = 800;
-		const int WINDOW_HEIGHT = 600;
-		//GL Window setup
-		glutInit(&argc, (char**)(argv));
-		glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
-		glutInitWindowPosition(0, 0);
-		glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		glutCreateWindow("MTRN3500 - Camera");
+	camhb = PMData;
+	//Define window size
+	const int WINDOW_WIDTH = 800;
+	const int WINDOW_HEIGHT = 600;
+	//GL Window setup
+	glutInit(&argc, (char**)(argv));
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	glutInitWindowPosition(0, 0);
+	glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+	glutCreateWindow("MTRN3500 - Camera");
 
-		glutDisplayFunc(display);
-		glutIdleFunc(idle);
-		glGenTextures(1, &tex);
+	glutDisplayFunc(display);
+	glutIdleFunc(idle);
+	glGenTextures(1, &tex);
 
-		//Socket to talk to server
-		subscriber.connect("tcp://192.168.1.200:26000");
-		subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-		glutMainLoop();
-	}
+	//Socket to talk to server
+	subscriber.connect("tcp://192.168.1.200:26000");
+	subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+	glutMainLoop();
 	return 1;
 }
 
@@ -114,7 +109,20 @@ void idle()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR_EXT, GL_UNSIGNED_BYTE, buffer);
 		delete[] buffer;
 	}
+	if (camhb->Heartbeat.Flags.Camera == 0) {
+		// check that heartbeat has been set to 0 by processmanagement
+		// if it has, then set it back to 1 
+		camhb->Heartbeat.Flags.Camera = 1;
+		std::cout << "heartbeat changed" << std::endl;
+	}
+	else {
+		// if the heartbeat is still 1 
+		// this means processmanagement has dieded and so everything should stop
+		std::cout << "process management is dieded" << std::endl;
+	}
+	if (camhb->Shutdown.Status) {
 
+	}
 	display();
 }
 
