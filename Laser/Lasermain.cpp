@@ -28,8 +28,10 @@ int main() {
 			std::cout << "process management is dieded" << std::endl;
 			//exit(0);
 		}
-		if (PMData->Shutdown.Status)
-			break;
+		if (PMData->Shutdown.Status) {
+			std::cout << "terminating program" << std::endl;
+			exit(0);
+		}
 		Thread::Sleep(1000);
 	}
 	return 0;

@@ -114,14 +114,17 @@ void idle()
 		// if it has, then set it back to 1 
 		camhb->Heartbeat.Flags.Camera = 1;
 		std::cout << "heartbeat changed" << std::endl;
+		Thread::Sleep(1000);
 	}
 	else {
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
+		Thread::Sleep(1000);
 	}
 	if (camhb->Shutdown.Status) {
-
+		std::cout << "terminating program" << std::endl;
+		exit(0);
 	}
 	display();
 }
