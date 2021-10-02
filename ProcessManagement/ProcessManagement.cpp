@@ -9,6 +9,8 @@
 #include <array>
 #include "SMStructs.h"
 #include "SMObject.h"
+#include <direct.h>
+#include <string>
 
 using namespace System;
 using namespace System::Net::Sockets;
@@ -17,7 +19,7 @@ using namespace System::Text;
 using namespace System::Threading;
 using namespace System::Diagnostics;
 
-#define NUM_UNITS 4
+#define NUM_UNITS 5
 
 bool IsProcessRunning(const char* processName);
 void StartProcesses();
@@ -40,16 +42,37 @@ int main()
 	PMObj.SMCreate();
 	PMObj.SMAccess();
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
+
 	//start all 5 modules
-	StartProcesses();
+	//StartProcesses();
+	std::string cwd("\0", FILENAME_MAX + 1);
+	std::string currDir = getcwd(&cwd[0], cwd.capacity());
+	currDir.append("\\..\\Debug");
+	String^ dirString = gcnew String(currDir.c_str());
+	array<String^>^ ModuleList = gcnew array<String^>{"GPS", "Camera", "Display", "Laser", "VehicleControl"};
+	array<int>^ Critical = gcnew array<int>(ModuleList->Length) { 0, 1, 0, 1, 1 };
+	array<Process^>^ ProcessList = gcnew array<Process^>(ModuleList->Length);
+	for (int i = 0; i < ModuleList->Length; i++) {
+		if (Process::GetProcessesByName(ModuleList[i])->Length == 0) {
+			ProcessList[i] = gcnew Process;
+			ProcessList[i]->StartInfo->WorkingDirectory = dirString;
+			ProcessList[i]->StartInfo->FileName = ModuleList[i];
+			ProcessList[i]->Start();
+			Console::WriteLine("The process " + ModuleList[i] + ".exe started");
+			}
+	
+	}
+
 	// limit before action is taken
 	int LIMIT = 3;
 	// array of counters, if any of the elements reach three then action is taken 
-	std::array<int, 4> counters = { 0,0,0,0 }; //Left to right represents processes gps to laser
+	std::array<int, 5> counters = { 0,0,0,0,0 }; //Left to right represents processes gps to laser
 	while (!_kbhit()) {
-		// reset i everytime to iterate through counters
-		int i = 0;
-		for (int mask = 0b00000001; mask < 0b00010000 ; mask <<= 1) {	
+		// reset strike everytime to iterate through counters
+		int strike = 0;
+		int process = 0;
+		for (int mask = 0b00000001; mask < 0b00100000 ; mask <<= 1) {	
+			
 			// PMData->Heartbeat.Status
 			std::cout << "mask: " << mask << std::endl;
 			if ((PMData->Heartbeat.Status & mask) == mask){ 
@@ -59,15 +82,31 @@ int main()
 				std::cout << "heartbeat changed for process" << std::endl;
 			} else {
 				// if bit is 0, then AND operation will return 0 
-				std::cout << counters[i] << std::endl;
-				counters[i]++;
-				if (counters[i] > LIMIT) {
+				std::cout << "strike: " << counters[strike] << std::endl;
+				counters[strike]++;
+				if (counters[strike] > LIMIT) {
 					// if critical process(another bitwise mask and operation, shutdown all if not then just restart process [TODO]
 					// for now default is to shutdown 
-					std::cout << "limit reached, terminating program" << std::endl;
+					if ((PMData->Heartbeat.Status & CRITICALMASK) == CRITICALMASK) {
+						std::cout << "CRITICAL PROGRAM: NOW SHUTTING DOWN OPERATIONS" << std::endl;
+						PMData->Shutdown.Status = 0xFF;
+					} else {
+
+						std::cout << "NON-CRITICAL PROGRAM: attempting to restart" << std::endl;
+						// check if process has exited, if it has, start it again
+						// if not, kill it and start again
+						if (ProcessList[process]->HasExited) {
+							ProcessList[process]->Start();
+						} else {
+							ProcessList[process]->Kill();
+							ProcessList[process]->Start();
+						}
+					}
 				}
+				process++;
 			}
-			i++;
+			strike++;
+			
 		}
 		Thread::Sleep(1000); // allow time for keypress for manual shutdown
 	}

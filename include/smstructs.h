@@ -50,10 +50,11 @@ struct UnitFlags
 		Garbage : 2;
 	*/
 	unsigned char	GPS : 1,	//NONCRITICAL
-		Camera : 1,				//NONCRITICAL
+		Camera : 1,				//CRITICAL
 		Display : 1,		//NONCRITICAL
-		Laser : 1,				//NONCRITICAL	
-		Garbage : 4;
+		Laser : 1,				//CRITICAL	
+		VehicleControl: 1,		//CRITICAL
+		Garbage : 3;
 };
 
 union ExecFlags
@@ -70,5 +71,5 @@ struct ProcessManagement
 };
 
 #define NONCRITICALMASK 0xff	//0 011 0000
-#define CRITICALMASK 0x0		//0 100 1111
+#define CRITICALMASK 0x1A		//0001 1010
 #endif
