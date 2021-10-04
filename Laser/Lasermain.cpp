@@ -45,7 +45,7 @@ int main() {
 	SendData = gcnew array<unsigned char>(16);
 
 	// authentication of zID by laser 
-	String^ Message = gcnew String("5261433/n"); // characters that can be read
+	String^ Message = gcnew String("5261433\n"); // characters that can be read
 	String^ AskScan = gcnew String("sRN LMDscandata");
 	String^ response;
 	SendData = Encoding::ASCII->GetBytes(Message);
@@ -56,7 +56,6 @@ int main() {
 	Stream->Read(RecvData, 0, RecvData->Length);
 	response = Encoding::ASCII->GetString(RecvData);
 	Console::WriteLine(response);
-	Console::ReadKey();
 
 	SendData = Encoding::ASCII->GetBytes(AskScan);
 
@@ -65,18 +64,14 @@ int main() {
 
 		Stream->WriteByte(0x02);
 		Stream->Write(SendData, 0, SendData->Length);
-		Stream->WriteByte(0x02);
+		Stream->WriteByte(0x03);
 		Thread::Sleep(10);
 		Stream->Read(RecvData, 0, RecvData->Length);
 
-		// This may not read all your data in one read, use a loop
-		int NumData = 0;
-		while (NumData != sizeof(RecvData->Length)) {
-			NumData += Stream->Read(RecvData, NumData, sizeof(RecvData->Length) - NumData);
-		}
 		// By this time, RecvData has data to fit GPS type object
 		// Binary to String Decoding
 		String^ LaserData = Encoding::ASCII->GetString(RecvData);
+		
 		Console::WriteLine(LaserData);
 		/*
 		array<wchar_t>^ Space = { ' ' };
@@ -108,6 +103,7 @@ int main() {
 		if (PMData->Shutdown.Status)
 			break;
 		Thread::Sleep(1000);
+		
 	}
 	Stream->Close();
 	Client->Close();
