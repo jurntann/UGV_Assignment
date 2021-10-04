@@ -53,13 +53,13 @@ int main() {
 	Thread::Sleep(10000); // wait for authentication
 
 	array<unsigned char>^ authData;
-	authData = gcnew array<unsigned char>(3);
+	authData = gcnew array<unsigned char>(1024);
 	Stream = Client->GetStream();
 	Stream->Read(authData, 0, authData->Length);
 	System::String^ LaserData = Encoding::ASCII->GetString(authData);
 	array<wchar_t>^ newLine = { '\n' };
 	array<String^>^ authArray = LaserData->Split(newLine);
-	if (authArray[0] == "OK\n") {
+	if (authArray[0] == "OK") {
 		std::cout << "authenticated" << std::endl;
 	}
 
