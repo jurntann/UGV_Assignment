@@ -40,34 +40,33 @@ int main() {
 
 	// Initialise all send and receive data for authentication
 	array<unsigned char>^ RecvData;
-	array<unsigned char>^ SendData;
+	array<unsigned char>^ SendData; // these are array of bytes
 	RecvData = gcnew array<unsigned char>(5000);
-	SendData = gcnew array<unsigned char>(1024);
+	SendData = gcnew array<unsigned char>(16);
 
 	// authentication of zID by laser 
-	System::String^ Message = gcnew String("# ");
-	Message = Message + "5261433\n";
+	String^ Message = gcnew String("5261433/n"); // characters that can be read
+	String^ AskScan = gcnew String("sRN LMDscandata");
+	String^ response;
 	SendData = Encoding::ASCII->GetBytes(Message);
 	NetworkStream^ Stream = Client->GetStream();
 	Stream->Write(SendData, 0, SendData->Length);
-	Thread::Sleep(10000); // wait for authentication
+	Thread::Sleep(10); // wait for authentication
 
-	array<unsigned char>^ authData;
-	authData = gcnew array<unsigned char>(1024);
-	Stream = Client->GetStream();
-	Stream->Read(authData, 0, authData->Length);
-	System::String^ LaserData = Encoding::ASCII->GetString(authData);
-	array<wchar_t>^ newLine = { '\n' };
-	array<String^>^ authArray = LaserData->Split(newLine);
-	if (authArray[0] == "OK") {
-		std::cout << "authenticated" << std::endl;
-	}
+	Stream->Read(RecvData, 0, RecvData->Length);
+	response = Encoding::ASCII->GetString(RecvData);
+	Console::WriteLine(response);
+	Console::ReadKey();
 
+	SendData = Encoding::ASCII->GetBytes(AskScan);
 
 	// Laser loop
 	while (1) {
-		// Get network stream
-		Stream = Client->GetStream();
+
+		Stream->WriteByte(0x02);
+		Stream->Write(SendData, 0, SendData->Length);
+		Stream->WriteByte(0x02);
+		Thread::Sleep(10);
 		Stream->Read(RecvData, 0, RecvData->Length);
 
 		// This may not read all your data in one read, use a loop
@@ -77,11 +76,11 @@ int main() {
 		}
 		// By this time, RecvData has data to fit GPS type object
 		// Binary to String Decoding
-		// what is LaserData type??
-		System::String^ LaserData = Encoding::ASCII->GetString(RecvData);
+		String^ LaserData = Encoding::ASCII->GetString(RecvData);
+		Console::WriteLine(LaserData);
+		/*
 		array<wchar_t>^ Space = { ' ' };
 		array<String^>^ StringArray = LaserData->Split(Space);
-
 		double StartAngle = System::Convert::ToInt32(StringArray[23], 16);
 		double Resolution = System::Convert::ToInt32(StringArray[24], 16) / 10000.0;
 		int NumRanges = System::Convert::ToInt32(StringArray[25], 16);
@@ -93,6 +92,8 @@ int main() {
 			RangeX[i] = Range[i] * sin(i * Resolution);
 			RangeY[i] = -Range[i] * cos(i * Resolution);
 		}
+		*/
+		// Heartbeat stuff
 		if (PMData->Heartbeat.Flags.Laser == 0) {
 			// check that heartbeat has been set to 0 by processmanagement
 			// if it has, then set it back to 1 
@@ -108,6 +109,8 @@ int main() {
 			break;
 		Thread::Sleep(1000);
 	}
+	Stream->Close();
+	Client->Close();
 	return 0;
 }
 
