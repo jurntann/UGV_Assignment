@@ -87,9 +87,10 @@ int main()
 				if (counters[strike] > LIMIT) {
 					// if critical process(another bitwise mask and operation, shutdown all if not then just restart process [TODO]
 					// for now default is to shutdown 
-					if ((PMData->Heartbeat.Status & CRITICALMASK) == CRITICALMASK) {
+					if ((PMData->Heartbeat.Status & CRITICALMASK) !=  CRITICALMASK){
 						std::cout << "CRITICAL PROGRAM: NOW SHUTTING DOWN OPERATIONS" << std::endl;
 						PMData->Shutdown.Status = 0xFF;
+						exit(0);
 					} else {
 
 						std::cout << "NON-CRITICAL PROGRAM: attempting to restart" << std::endl;

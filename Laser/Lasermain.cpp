@@ -60,7 +60,7 @@ int main() {
 	SendData = Encoding::ASCII->GetBytes(AskScan);
 
 	// Laser loop
-	while (1) {
+	while (!_kbhit()) {
 
 		Stream->WriteByte(0x02);
 		Stream->Write(SendData, 0, SendData->Length);
@@ -73,7 +73,7 @@ int main() {
 		String^ LaserData = Encoding::ASCII->GetString(RecvData);
 		
 		Console::WriteLine(LaserData);
-		/*
+		
 		array<wchar_t>^ Space = { ' ' };
 		array<String^>^ StringArray = LaserData->Split(Space);
 		double StartAngle = System::Convert::ToInt32(StringArray[23], 16);
@@ -86,8 +86,9 @@ int main() {
 			Range[i] = System::Convert::ToInt32(StringArray[26 + i], 16);
 			RangeX[i] = Range[i] * sin(i * Resolution);
 			RangeY[i] = -Range[i] * cos(i * Resolution);
+			//SM_Laser.x[i] = RangeX[i];
+			//SM_Laser.y[i] = RangeY[i];
 		}
-		*/
 		// Heartbeat stuff
 		if (PMData->Heartbeat.Flags.Laser == 0) {
 			// check that heartbeat has been set to 0 by processmanagement
