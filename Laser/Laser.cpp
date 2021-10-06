@@ -31,7 +31,7 @@ int Laser::setupSharedMemory()
 	// SM Creation and seeking access
 	laserObj.SMCreate();
 	laserObj.SMAccess();
-	ProcessManagement* laserTing = (ProcessManagement*)laserObj.pData;
+	SM_Laser* laserTing = (SM_Laser*)laserObj.pData;
 	// YOUR CODE HERE
 	return 1;
 }
@@ -41,7 +41,7 @@ int Laser::getData()
 	Stream = Client->GetStream();
 	Stream->Read(ReadData, 0, ReadData->Length);
 	data = Encoding::ASCII->GetString(ReadData);
-	Console::WriteLine(data);
+	Console::WriteLine(data); //(remove when it works)
 	// YOUR CODE HERE
 	return 1;
 }
@@ -81,12 +81,17 @@ int Laser::checkData()
 }
 int Laser::sendDataToSharedMemory()
 {
+	SMObject laserObj(TEXT("Laser"), sizeof(SM_Laser));
+	// SM Creation and seeking access
+	laserObj.SMAccess();
+	SM_Laser* laserTing = (SM_Laser*)laserObj.pData;
+
 	for (int i = 0; i < sizeof(SM_Laser); i++) {
-		laserTing.x[i] = RangeX[i];
-		laserTing.y[i] = RangeY[i];
-		// print data to terminal
-		Console::WriteLine("X data is {0,12:F3}", laserTing.x[i]);
-		Console::WriteLine("Y data is {0,12:F3}", laserTing.y[i]);
+		laserTing->x[i] = RangeX[i];
+		laserTing->y[i] = RangeY[i];
+		// print data to terminal 
+		Console::WriteLine("X data is {0,12:F3}", laserTing->x[i]);
+		Console::WriteLine("Y data is {0,12:F3}", laserTing->y[i]);
 	}
 	// YOUR CODE HERE
 	return 1;
@@ -98,6 +103,17 @@ bool Laser::getShutdownFlag()
 }
 int Laser::setHeartbeat(bool heartbeat)
 {
+	if (heartbeat == 0) {
+		// check that heartbeat has been set to 0 by processmanagement
+		// if it has, then set it back to 1 
+		heartbeat = 1;
+	}
+	else {
+		// if the heartbeat is still 1 
+		// this means processmanagement has dieded and so everything should stop
+		std::cout << "process management is dieded" << std::endl;
+		//exit(0);
+	}
 	// YOUR CODE HERE
 	return 1;
 }

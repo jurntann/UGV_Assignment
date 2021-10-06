@@ -56,17 +56,7 @@ int main() {
 		// By this time, RecvData has data to fit GPS type object
 		// Binary to String Decod
 		// Heartbeat stuff
-		if (PMData->Heartbeat.Flags.Laser == 0) {
-			// check that heartbeat has been set to 0 by processmanagement
-			// if it has, then set it back to 1 
-			PMData->Heartbeat.Flags.Laser = 1;
-		}
-		else {
-			// if the heartbeat is still 1 
-			// this means processmanagement has dieded and so everything should stop
-			std::cout << "process management is dieded" << std::endl;
-			//exit(0);
-		}
+		Laserboi.setHeartbeat(PMData->Heartbeat.Flags.Laser);
 		if (PMData->Shutdown.Status)
 			break;
 		Thread::Sleep(1000);
