@@ -1,17 +1,61 @@
 #include"Laser.h"
+
+
+using namespace System;
+using namespace Net;
+using namespace Sockets;
+using namespace Text;
+using namespace System::Net::Sockets;
+using namespace System::Net;
+using namespace System::Text;
+using namespace System::Threading;
+using namespace System::Diagnostics;
+
+
 int Laser::connect(String^ hostName, int portNumber)
 {
+	Client = gcnew TcpClient(hostName, portNumber);
+	//Configure client
+	Client->NoDelay = true;
+	Client->ReceiveTimeout = 500; // wait 500 ms before reporting error
+	Client->SendTimeout = 500;
+	Client->ReceiveBufferSize = 1024; // when data comes, set aside 1kb of memory to store data
+	Client->SendBufferSize = 1024;
+	
 	// YOUR CODE HERE
 	return 1;
 }
 int Laser::setupSharedMemory()
 {
+	SMObject laserObj (TEXT("Laser"), sizeof(SM_Laser));
+	// SM Creation and seeking access
+	laserObj.SMCreate();
+	laserObj.SMAccess();
+	ProcessManagement* laserTing = (ProcessManagement*)laserObj.pData;
 	// YOUR CODE HERE
 	return 1;
 }
 int Laser::getData()
 {
+	ReadData = gcnew array<unsigned char>(5000);
+	Stream = Client->GetStream();
+	Stream->Read(ReadData, 0, ReadData->Length);
 	// YOUR CODE HERE
+	return 1;
+}
+int Laser::sendData(String^ message)
+{
+	Stream = Client->GetStream();
+	SendData = gcnew array<unsigned char>(16);
+	Stream->WriteByte(0x02);
+	Stream->Write(SendData, 0, SendData->Length);
+	Stream->WriteByte(0x03);
+	// YOUR CODE HERE
+	return 1;
+}
+int Laser::processData() { // self written function much wow
+
+
 	return 1;
 }
 int Laser::checkData()
@@ -37,34 +81,4 @@ int Laser::setHeartbeat(bool heartbeat)
 Laser::~Laser()
 {
 	// YOUR CODE HERE
-}
-
-unsigned long CRC32Value(int i)
-{
-	int j;
-	unsigned long ulCRC;
-	ulCRC = i;
-	for (j = 8; j > 0; j--)
-	{
-		if (ulCRC & 1)
-			ulCRC = (ulCRC >> 1) ^ CRC32_POLYNOMIAL;
-		else
-			ulCRC >>= 1;
-	}
-	return ulCRC;
-}
-
-unsigned long CalculateBlockCRC32(unsigned long ulCount, /* Number of bytes in the data block */
-	unsigned char* ucBuffer) /* Data block */
-{
-	unsigned long ulTemp1;
-	unsigned long ulTemp2;
-	unsigned long ulCRC = 0;
-	while (ulCount-- != 0)
-	{
-		ulTemp1 = (ulCRC >> 8) & 0x00FFFFFFL;
-		ulTemp2 = CRC32Value(((int)ulCRC ^ *ucBuffer++) & 0xff);
-		ulCRC = ulTemp1 ^ ulTemp2;
-	}
-	return(ulCRC);
 }

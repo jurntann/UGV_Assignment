@@ -17,6 +17,7 @@ using namespace System::Text;
 using namespace System::Threading;
 using namespace System::Diagnostics;
 
+
 int main() {
 	// Declare an SM Object instance
 	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
@@ -25,24 +26,16 @@ int main() {
 	PMObj.SMCreate();
 	PMObj.SMAccess();
 	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
+	Laser Laserboi;
+	Laserboi.setupSharedMemory();
 
 	// create transmission control protocol client object
-	TcpClient^ Client;
 	int PortNumber = 23000; // create port number
-	//instantiate tcpclient object and connect to it
-	Client = gcnew TcpClient("192.168.1.200", PortNumber);
-	//Configure client
-	Client->NoDelay = true;
-	Client->ReceiveTimeout = 500; // wait 500 ms before reporting error
-	Client->SendTimeout = 500;
-	Client->ReceiveBufferSize = 1024; // when data comes, set aside 1kb of memory to store data
-	Client->SendBufferSize = 1024;
+	String^ hostName = "192.168.1.200";
+	Laserboi.connect(hostName, PortNumber);
 
-	// Initialise all send and receive data for authentication
-	array<unsigned char>^ RecvData;
-	array<unsigned char>^ SendData; // these are array of bytes
-	RecvData = gcnew array<unsigned char>(5000);
-	SendData = gcnew array<unsigned char>(16);
+	// Initialise all send and receive data for authentication 
+
 
 	// authentication of zID by laser 
 	String^ Message = gcnew String("5261433\n"); // characters that can be read

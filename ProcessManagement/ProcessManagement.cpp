@@ -36,7 +36,7 @@ TCHAR Units[10][20] = //
 
 int main()
 {
-	// Declare an SM Object instance
+	// Declare an SM Object instance for PROCESS MANAGEMENT
 	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
 	// SM Creation and seeking access
 	PMObj.SMCreate();
