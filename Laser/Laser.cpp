@@ -37,8 +37,8 @@ int Laser::setupSharedMemory()
 }
 int Laser::getData()
 {
-	ReadData = gcnew array<unsigned char>(5000);
 	Stream = Client->GetStream();
+	ReadData = gcnew array<unsigned char>(5000);
 	Stream->Read(ReadData, 0, ReadData->Length);
 	data = Encoding::ASCII->GetString(ReadData);
 	Console::WriteLine(data); //(remove when it works)

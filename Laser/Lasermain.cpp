@@ -44,11 +44,13 @@ int main() {
 	Thread::Sleep(10); // wait for authentication
 
 	Laserboi.getData();
+	Console::WriteLine("authenticated");
 
 	// Laser loop
 	while (!_kbhit()) {
 
 		Laserboi.sendData(AskScan);
+		Console::WriteLine("sent request");
 		Thread::Sleep(10);
 		Laserboi.getData();
 		Laserboi.processData();
