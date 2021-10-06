@@ -21,4 +21,9 @@ public:
 protected:
 	// YOUR CODE HERE (ADDITIONAL MEMBER VARIABLES THAT YOU MAY WANT TO ADD)
 	array<unsigned char>^ SendData;
+private:
+	String^ data;
+	array<double>^ Range;
+	array<double>^ RangeX;
+	array<double>^ RangeY;
 };
