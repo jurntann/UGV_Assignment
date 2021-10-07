@@ -12,16 +12,21 @@ public:
 	int getData() override;
 	int checkData() override;
 	int sendDataToSharedMemory() override;
-	bool getShutdownFlag() override;
+	bool getShutdownFlag()override;
 	int setHeartbeat(bool heartbeat) override;
 	int processData() override;
-	int sendData(String^ message) override;
+	int sendData() override;
+	int authData() override;
+	int shutdown(bool slip) override;
 	~Laser();
 
 protected:
 	// YOUR CODE HERE (ADDITIONAL MEMBER VARIABLES THAT YOU MAY WANT TO ADD)
 	array<unsigned char>^ SendData;
 private:
+	SM_Laser* laserTing;
+	String^ Message; // characters that can be read
+	String^ AskScan;
 	String^ data;
 	array<double>^ Range;
 	array<double>^ RangeX;

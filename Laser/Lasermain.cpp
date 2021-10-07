@@ -38,31 +38,42 @@ int main() {
 
 
 	// authentication of zID by laser 
-	String^ Message = gcnew String("5261433\n"); // characters that can be read
-	String^ AskScan = gcnew String("sRN LMDscandata");
-	Laserboi.sendData(Message);
+	Laserboi.authData();
 	Thread::Sleep(10); // wait for authentication
 
 	Laserboi.getData();
 	Console::WriteLine("authenticated");
-
+	bool slip = 0;
 	// Laser loop
 	while (!_kbhit()) {
 
-		Laserboi.sendData(AskScan);
+		Laserboi.sendData();
 		Console::WriteLine("sent request");
 		Thread::Sleep(10);
 		Laserboi.getData();
+		Console::WriteLine("got data");
 		Laserboi.processData();
+		Console::WriteLine("process data");
 		Laserboi.sendDataToSharedMemory();
-		// By this time, RecvData has data to fit GPS type object
-		// Binary to String Decod
+		Console::WriteLine("sent to shared memory data");
 		// Heartbeat stuff
-		Laserboi.setHeartbeat(PMData->Heartbeat.Flags.Laser);
-		if (PMData->Shutdown.Status)
+		if (PMData->Heartbeat.Flags.Laser == 0) {
+			// check that heartbeat has been set to 0 by processmanagement
+			// if it has, then set it back to 1 
+			PMData->Heartbeat.Flags.Laser = 1;
+		}
+		else {
+			// if the heartbeat is still 1 
+			// this means processmanagement has dieded and so everything should stop
+			std::cout << "process management is dieded" << std::endl;
+			//exit(0);
+		}
+		if (PMData->Shutdown.Status) {
+			std::cout << "terminating program" << std::endl;
 			break;
-		Thread::Sleep(1000);
-		
+
+		}
+		Thread::Sleep(1000);		
 	}
 	return 0;
 }

@@ -21,17 +21,17 @@ int Laser::connect(String^ hostName, int portNumber)
 	Client->SendTimeout = 500;
 	Client->ReceiveBufferSize = 1024; // when data comes, set aside 1kb of memory to store data
 	Client->SendBufferSize = 1024;
-	
+	Stream = Client->GetStream();
 	// YOUR CODE HERE
 	return 1;
 }
 int Laser::setupSharedMemory()
 {
-	SMObject laserObj (TEXT("Laser"), sizeof(SM_Laser));
+	SensorData = new SMObject(TEXT("Laser"), sizeof(SM_Laser));
 	// SM Creation and seeking access
-	laserObj.SMCreate();
-	laserObj.SMAccess();
-	SM_Laser* laserTing = (SM_Laser*)laserObj.pData;
+	SensorData->SMCreate();
+	SensorData->SMAccess();
+	laserTing = (SM_Laser*)SensorData->pData;
 	// YOUR CODE HERE
 	return 1;
 }
@@ -45,15 +45,23 @@ int Laser::getData()
 	// YOUR CODE HERE
 	return 1;
 }
-int Laser::sendData(String^ message)
+int Laser::sendData()
 { // self written function much wow
-	Stream = Client->GetStream();
+	AskScan = gcnew String("sRN LMDscandata");
 	SendData = gcnew array<unsigned char>(16);
-	SendData = Encoding::ASCII->GetBytes(message);
+	SendData = Encoding::ASCII->GetBytes(AskScan);
 	Stream->WriteByte(0x02);
 	Stream->Write(SendData, 0, SendData->Length);
 	Stream->WriteByte(0x03);
 	// YOUR CODE HERE
+	return 1;
+}
+int Laser::authData()
+{
+	Message = gcnew String("5261433\n");
+	SendData = gcnew array<unsigned char>(16);
+	SendData = Encoding::ASCII->GetBytes(Message);
+	Stream->Write(SendData, 0, SendData->Length);
 	return 1;
 }
 int Laser::processData() 
@@ -71,7 +79,6 @@ int Laser::processData()
 		RangeX[i] = Range[i] * sin(i * Resolution);
 		RangeY[i] = -Range[i] * cos(i * Resolution);
 	}
-
 	return 1;
 }
 int Laser::checkData()
@@ -81,24 +88,28 @@ int Laser::checkData()
 }
 int Laser::sendDataToSharedMemory()
 {
-	SMObject laserObj(TEXT("Laser"), sizeof(SM_Laser));
-	// SM Creation and seeking access
-	laserObj.SMAccess();
-	SM_Laser* laserTing = (SM_Laser*)laserObj.pData;
-
-	for (int i = 0; i < sizeof(SM_Laser); i++) {
+	for (int i = 0; i < STANDARD_LASER_LENGTH; i++) {
 		laserTing->x[i] = RangeX[i];
 		laserTing->y[i] = RangeY[i];
+		// std::cout << RangeX[i] << std::endl;
 		// print data to terminal 
-		Console::WriteLine("X data is {0,12:F3}", laserTing->x[i]);
-		Console::WriteLine("Y data is {0,12:F3}", laserTing->y[i]);
+		// std::cout << "did u see anything?" << std::endl;
+		// Console::WriteLine("X data is {0,12:F3}", laserTing->x[i]);
+		// Console::WriteLine("Y data is {0,12:F3}", laserTing->y[i]);
 	}
 	// YOUR CODE HERE
 	return 1;
 }
 bool Laser::getShutdownFlag()
 {
-	// YOUR CODE HERE
+	return 1;
+}
+
+int Laser::shutdown(bool slip) 
+{
+	if (slip == 1) {
+		exit(0);
+	}
 	return 1;
 }
 int Laser::setHeartbeat(bool heartbeat)
@@ -109,8 +120,6 @@ int Laser::setHeartbeat(bool heartbeat)
 		heartbeat = 1;
 	}
 	else {
-		// if the heartbeat is still 1 
-		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
 		//exit(0);
 	}
