@@ -17,7 +17,7 @@ public:
 	int processData() override;
 	int sendData() override;
 	int authData() override;
-	int shutdown(bool slip) override;
+	int manageHB() override;
 	~Laser();
 
 protected:
@@ -25,6 +25,7 @@ protected:
 	array<unsigned char>^ SendData;
 private:
 	SM_Laser* laserTing;
+	ProcessManagement* PMTing;
 	String^ Message; // characters that can be read
 	String^ AskScan;
 	String^ data;

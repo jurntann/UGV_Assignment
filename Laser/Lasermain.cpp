@@ -19,13 +19,6 @@ using namespace System::Diagnostics;
 
 
 int main() {
-	// Declare an SM Object instance
-	SMObject PMObj(TEXT("ProcessManagement"), sizeof(ProcessManagement));
-
-	// SM Creation and seeking access
-	PMObj.SMCreate();
-	PMObj.SMAccess();
-	ProcessManagement* PMData = (ProcessManagement*)PMObj.pData;
 	Laser Laserboi;
 	Laserboi.setupSharedMemory();
 
@@ -43,7 +36,6 @@ int main() {
 
 	Laserboi.getData();
 	Console::WriteLine("authenticated");
-	bool slip = 0;
 	// Laser loop
 	while (!_kbhit()) {
 
@@ -56,7 +48,7 @@ int main() {
 		Console::WriteLine("process data");
 		Laserboi.sendDataToSharedMemory();
 		Console::WriteLine("sent to shared memory data");
-		// Heartbeat stuff
+		/*Heartbeat stuff
 		if (PMData->Heartbeat.Flags.Laser == 0) {
 			// check that heartbeat has been set to 0 by processmanagement
 			// if it has, then set it back to 1 
@@ -68,11 +60,9 @@ int main() {
 			std::cout << "process management is dieded" << std::endl;
 			//exit(0);
 		}
-		if (PMData->Shutdown.Status) {
-			std::cout << "terminating program" << std::endl;
-			break;
-
-		}
+		*/
+		Laserboi.manageHB();
+		Laserboi.getShutdownFlag();
 		Thread::Sleep(1000);		
 	}
 	return 0;

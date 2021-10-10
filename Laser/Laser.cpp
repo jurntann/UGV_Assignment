@@ -28,11 +28,16 @@ int Laser::connect(String^ hostName, int portNumber)
 int Laser::setupSharedMemory()
 {
 	SensorData = new SMObject(TEXT("Laser"), sizeof(SM_Laser));
-	// SM Creation and seeking access
+	// SM Creation and seeking access for LASER SHARED MEMORY
 	SensorData->SMCreate();
 	SensorData->SMAccess();
 	laserTing = (SM_Laser*)SensorData->pData;
-	// YOUR CODE HERE
+	// SM Creation and seeking access for PROCESS MANAGEMENT SHARED MEMORY
+	ProcessManagementData = new SMObject(TEXT("ProcessManagement"), sizeof(ProcessManagement));
+	// SM Creation and seeking access
+	ProcessManagementData->SMCreate();
+	ProcessManagementData->SMAccess();
+	PMTing = (ProcessManagement*)ProcessManagementData->pData;
 	return 1;
 }
 int Laser::getData()
@@ -102,28 +107,31 @@ int Laser::sendDataToSharedMemory()
 }
 bool Laser::getShutdownFlag()
 {
-	return 1;
-}
-
-int Laser::shutdown(bool slip) 
-{
-	if (slip == 1) {
+	if (PMTing->Shutdown.Status) {
+		std::cout << "terminating program" << std::endl;
 		exit(0);
 	}
 	return 1;
 }
+
 int Laser::setHeartbeat(bool heartbeat)
 {
-	if (heartbeat == 0) {
+	return 1;
+}
+
+int Laser::manageHB()
+{
+	if (PMTing->Heartbeat.Flags.Laser == 0) {
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
-		heartbeat = 1;
+		PMTing->Heartbeat.Flags.Laser = 1;
 	}
 	else {
+		// if the heartbeat is still 1 
+		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
 		//exit(0);
 	}
-	// YOUR CODE HERE
 	return 1;
 }
 Laser::~Laser()
