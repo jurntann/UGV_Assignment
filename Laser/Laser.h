@@ -18,6 +18,8 @@ public:
 	int sendData() override;
 	int authData() override;
 	int manageHB() override;
+	int setTimer() override;
+	
 	~Laser();
 
 protected:
@@ -32,4 +34,6 @@ private:
 	array<double>^ Range;
 	array<double>^ RangeX;
 	array<double>^ RangeY;
+	int counter;
+	int LIMIT;
 };

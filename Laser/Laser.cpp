@@ -129,15 +129,24 @@ int Laser::manageHB()
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
 		PMTing->Heartbeat.Flags.Laser = 1;
+		counter = 0;
 	}
 	else {
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
-		//counter++ ;
-		// if (counter>LIMIT){
-		//exit(0);
+		counter++ ;
+		if (counter > LIMIT) {
+			exit(0);
+		}
 	}
+	return 1;
+}
+
+int Laser::setTimer()
+{
+	counter = 0;
+	LIMIT = 10;
 	return 1;
 }
 Laser::~Laser()

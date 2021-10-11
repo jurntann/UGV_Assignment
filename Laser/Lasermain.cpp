@@ -36,6 +36,7 @@ int main() {
 
 	Laserboi.getData();
 	Console::WriteLine("authenticated");
+	Laserboi.setTimer();
 	// Laser loop
 	while (!_kbhit()) {
 
