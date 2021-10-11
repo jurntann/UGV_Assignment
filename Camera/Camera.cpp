@@ -25,6 +25,8 @@ void idle();
 
 // Global variables
 ProcessManagement* camhb;
+int counter = 0;
+int LIMIT = 10;
 
 GLuint tex;
 
@@ -120,6 +122,10 @@ void idle()
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
+		counter++;
+		if (counter > LIMIT) {
+			exit(0);
+		}
 		Thread::Sleep(1000);
 	}
 	if (camhb->Shutdown.Status) {

@@ -76,6 +76,8 @@ double steering = 0;
 
 // Global variables
 ProcessManagement* hb; 
+int counter = 0;
+int LIMIT = 10;
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
@@ -192,7 +194,6 @@ double getTime()
 }
 
 void idle() {
-
 	if (KeyManager::get()->isAsciiKeyPressed('a')) {
 		Camera::get()->strafeLeft();
 	}
@@ -246,6 +247,10 @@ void idle() {
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
+		counter++;
+		if (counter > LIMIT) {
+			exit(0);
+		}
 		Thread::Sleep(1000);
 		
 	}
