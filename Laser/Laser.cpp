@@ -121,6 +121,10 @@ int Laser::setHeartbeat(bool heartbeat)
 
 int Laser::manageHB()
 {
+	// timer waiting not implemented yet
+	// method: a counter int and limit int as private members of class
+	// int counter; int LIMIT; 
+	// a setter function to set counter to 0 
 	if (PMTing->Heartbeat.Flags.Laser == 0) {
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
@@ -130,6 +134,8 @@ int Laser::manageHB()
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
 		std::cout << "process management is dieded" << std::endl;
+		//counter++ ;
+		// if (counter>LIMIT){
 		//exit(0);
 	}
 	return 1;

@@ -33,7 +33,10 @@ int main() {
 	SendData = gcnew array<unsigned char>(16);
 	NetworkStream^ Stream = Client->GetStream(); 
 	*/
+	int LIMIT = 10;
+	int strike = 0;
 	while (1) {
+		
 		//Stream->Read(RecvData, 0, RecvData->Length);
 		// By this time, RecvData has data to fit GPS type object
 		// Binary to String Decoding
@@ -43,11 +46,15 @@ int main() {
 			// check that heartbeat has been set to 0 by processmanagement
 			// if it has, then set it back to 1 
 			PMData->Heartbeat.Flags.GPS = 1;
+			strike = 0;
 		} else {
 			// if the heartbeat is still 1 
 			// this means processmanagement has dieded and so everything should stop
 			std::cout << "process management is dieded" << std::endl;
-			//exit(0);
+			strike++;
+			if (strike > LIMIT) {
+				exit(0);
+			}
 		}
 		if (PMData->Shutdown.Status) {
 			std::cout << "terminating program" << std::endl;
