@@ -99,8 +99,8 @@ int Laser::sendDataToSharedMemory()
 		// std::cout << RangeX[i] << std::endl;
 		// print data to terminal 
 		// std::cout << "did u see anything?" << std::endl;
-		// Console::WriteLine("X data is {0,12:F3}", laserTing->x[i]);
-		// Console::WriteLine("Y data is {0,12:F3}", laserTing->y[i]);
+		 Console::WriteLine("X data is {0,12:F3}", laserTing->x[i]);
+		 Console::WriteLine("Y data is {0,12:F3}", laserTing->y[i]);
 	}
 	// YOUR CODE HERE
 	return 1;
@@ -137,8 +137,7 @@ int Laser::manageHB()
 		std::cout << "process management is dieded: "<< counter << std::endl;
 		counter++ ;
 		if (counter > LIMIT) {
-			//exit(0);
-			std::cout << "heres the problem" << std::endl;
+			exit(0);
 		}
 	}
 	return 1;

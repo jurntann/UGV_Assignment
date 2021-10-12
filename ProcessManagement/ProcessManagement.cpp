@@ -53,13 +53,13 @@ int main()
 	array<int>^ Critical = gcnew array<int>(ModuleList->Length) { 0, 1, 0, 1, 1 };
 	array<Process^>^ ProcessList = gcnew array<Process^>(ModuleList->Length);
 	for (int i = 0; i < ModuleList->Length; i++) {
-		if (Process::GetProcessesByName(ModuleList[i])->Length == 0) {
+		//if (Process::GetProcessesByName(ModuleList[i])->Length == 0) {
 			ProcessList[i] = gcnew Process;
 			ProcessList[i]->StartInfo->WorkingDirectory = dirString;
 			ProcessList[i]->StartInfo->FileName = ModuleList[i];
 			ProcessList[i]->Start();
 			Console::WriteLine("The process " + ModuleList[i] + ".exe started");
-			}
+			//}
 	
 	}
 

@@ -39,7 +39,8 @@ int main() {
 	Laserboi.setTimer();
 	// Laser loop
 	while (!_kbhit()) {
-
+		Laserboi.manageHB();
+		Laserboi.getShutdownFlag();
 		Laserboi.sendData();
 		Console::WriteLine("sent request");
 		Thread::Sleep(10);
@@ -62,8 +63,7 @@ int main() {
 			//exit(0);
 		}
 		*/
-		Laserboi.manageHB();
-		Laserboi.getShutdownFlag();
+
 		Thread::Sleep(1000);		
 	}
 	return 0;
