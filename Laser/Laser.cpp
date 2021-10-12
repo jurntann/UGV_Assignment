@@ -134,10 +134,11 @@ int Laser::manageHB()
 	else {
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
-		std::cout << "process management is dieded" << std::endl;
+		std::cout << "process management is dieded: "<< counter << std::endl;
 		counter++ ;
 		if (counter > LIMIT) {
-			exit(0);
+			//exit(0);
+			std::cout << "heres the problem" << std::endl;
 		}
 	}
 	return 1;
