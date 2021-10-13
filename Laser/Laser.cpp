@@ -81,8 +81,8 @@ int Laser::processData()
 	RangeY = gcnew array<double>(NumRanges);
 	for (int i = 0; i < NumRanges; i++) {
 		Range[i] = System::Convert::ToInt32(StringArray[26 + i], 16);
-		RangeX[i] = Range[i] * sin(i * Resolution);
-		RangeY[i] = -Range[i] * cos(i * Resolution);
+		RangeX[i] = Range[i] * sin(i * Resolution / 180 * 3.14)/1000;
+		RangeY[i] = -Range[i] * cos(i * Resolution / 180 * 3.14)/1000;
 	}
 	return 1;
 }
