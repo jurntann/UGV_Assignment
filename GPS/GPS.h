@@ -19,10 +19,32 @@ public:
 	int sendDataToSharedMemory() override;
 	bool getShutdownFlag() override;
 	int setHeartbeat(bool heartbeat) override;
+	int manageHB() override;
+	int setTimer() override;
 	~GPS();
 
 protected:
 	// YOUR CODE HERE (ADDITIONAL MEMBER VARIABLES THAT YOU MAY WANT TO ADD)
+	array<unsigned char>^ SendData;
+	array<unsigned char>^ ReadData;
+private: 
+	SM_GPS* GPSTing;
+	ProcessManagement* PMTing;
+	String^ Message; // characters that can be read
+	String^ data;
+	array<double>^ Range;
+	array<double>^ RangeX;
+	array<double>^ RangeY;
+	int counter;
+	int LIMIT;
+
+	// GPS Particulars
+	unsigned int Checksum;
+	double Northing;
+	double Easting;
+	double Height;
+	SerialPort^ Port;
+	String^ PortName;
 
 };
 

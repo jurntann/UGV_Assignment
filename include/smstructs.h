@@ -31,24 +31,19 @@ struct SM_VehicleControl
 	double Steering;
 };
 
-struct SM_GPS
+struct SM_GPS // 112 bytes
 {
+	unsigned int Header;
+	unsigned char Discards1[40];
 	double northing;
 	double easting;
 	double height;
+	unsigned char Discards2[40];
+	unsigned int Checksum;
 };
 
 struct UnitFlags
 {
-	/*
-	unsigned char	ProcessManagement : 1,	//NONCRITICAL
-					Laser : 1,				//NONCRITICAL
-					VehicleControl : 1,		//NONCRITICAL
-					GPS : 1,				//NONCRITICAL
-					OpenGL : 1,				//NONCRITICAL
-					Camera : 1,				//NONCRITICAL
-		Garbage : 2;
-	*/
 	unsigned char	GPS : 1,	//NONCRITICAL
 		Camera : 1,				//CRITICAL
 		Display : 1,		//NONCRITICAL
