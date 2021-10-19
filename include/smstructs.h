@@ -29,6 +29,7 @@ struct SM_VehicleControl
 {
 	double Speed;
 	double Steering;
+	int flag;
 };
 
 struct SM_GPS // 112 bytes

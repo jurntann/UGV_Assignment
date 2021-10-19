@@ -10,6 +10,7 @@ public:
 	int connect(String^ hostName, int portNumber) override;
 	int setupSharedMemory() override;
 	int getData() override;
+	int sendData() override;
 	int checkData() override;
 	int sendDataToSharedMemory() override;
 	bool getShutdownFlag()override;
@@ -26,10 +27,5 @@ protected:
 private:
 	SM_VehicleControl* vehicleTing;
 	ProcessManagement* PMTing;
-	String^ Message; // characters that can be read
-	String^ AskScan;
-	String^ data;
-	array<double>^ Range;
-	array<double>^ RangeX;
-	array<double>^ RangeY;
+	String^ SendSignal;
 };
