@@ -15,6 +15,7 @@ public:
 	int connect(String^ hostName, int portNumber) override;
 	int setupSharedMemory() override;
 	int getData() override;
+	int sendData() override;
 	int checkData() override;
 	int sendDataToSharedMemory() override;
 	bool getShutdownFlag() override;
@@ -43,8 +44,7 @@ private:
 	double Northing;
 	double Easting;
 	double Height;
-	SerialPort^ Port;
-	String^ PortName;
+	String^ AskScan;
 
 };
 

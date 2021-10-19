@@ -14,22 +14,14 @@ using namespace System::Diagnostics;
 
 int GPS::connect(String^ hostName, int portNumber) 
 {
-	Port = gcnew SerialPort;
-	PortName = gcnew String("COM1");
-	SendData = gcnew array<unsigned char>(16);
-
-	// CONFIGURATION
-	Port->PortName = PortName;
-	Port->BaudRate = 115200;
-	Port->StopBits = StopBits::One;
-	Port->DataBits = 8;
-	Port->Parity = Parity::None;
-	Port->Handshake = Handshake::None;
-	// Set the read/write timeouts & buffer size
-	Port->ReadTimeout = 500;
-	Port->WriteTimeout = 500;
-	Port->WriteBufferSize = 1024;
-
+	Client = gcnew TcpClient(hostName, portNumber);
+	//Configure client
+	Client->NoDelay = true;
+	Client->ReceiveTimeout = 500; // wait 500 ms before reporting error
+	Client->SendTimeout = 500;
+	Client->ReceiveBufferSize = 1024; // when data comes, set aside 1kb of memory to store data
+	Client->SendBufferSize = 1024;
+	Stream = Client->GetStream();
 	return 1;
 }
 int GPS::setupSharedMemory() 
@@ -49,8 +41,11 @@ int GPS::setupSharedMemory()
 }
 int GPS::getData() 
 {
-	Port->Open();
-	Port->Read(ReadData, 0, sizeof(SM_GPS));
+	Stream = Client->GetStream();
+	ReadData = gcnew array<unsigned char>(5000);
+	Stream->Read(ReadData, 0, ReadData->Length);
+	data = Encoding::ASCII->GetString(ReadData);
+	Console::WriteLine(data); //(remove when it works)
 	return 1;
 }
 int GPS::checkData() 
@@ -58,6 +53,18 @@ int GPS::checkData()
 	// YOUR CODE HERE
 	return 1;
 }
+
+int GPS::sendData()
+{ // self written function much wow
+	SendData = gcnew array<unsigned char>(16);
+	SendData = Encoding::ASCII->GetBytes(AskScan);
+	Stream->WriteByte(0x02);
+	Stream->Write(SendData, 0, SendData->Length);
+	Stream->WriteByte(0x03);
+	// YOUR CODE HERE
+	return 1;
+}
+
 int GPS::sendDataToSharedMemory() 
 {
 	unsigned int Header = 0;
