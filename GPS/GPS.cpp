@@ -103,10 +103,10 @@ int GPS::manageHB()
 	// method: a counter int and limit int as private members of class
 	// int counter; int LIMIT; 
 	// a setter function to set counter to 0 
-	if (PMTing->Heartbeat.Flags.Laser == 0) {
+	if (PMTing->Heartbeat.Flags.GPS == 0) {
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
-		PMTing->Heartbeat.Flags.Laser = 1;
+		PMTing->Heartbeat.Flags.GPS = 1;
 		counter = 0;
 	}
 	else {
@@ -128,7 +128,8 @@ int GPS::setTimer()
 }
 GPS::~GPS()
 {
-	// YOUR CODE HERE
+	Stream->Close();
+	Client->Close();
 }
 
 unsigned long CRC32Value(int i)

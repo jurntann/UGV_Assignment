@@ -87,17 +87,40 @@ int VehicleControl::sendData()
 	return 1;
 
 }
-int VehicleControl::authData()
+
+int VehicleControl::manageHB()
 {
+	// timer waiting not implemented yet
+	// method: a counter int and limit int as private members of class
+	// int counter; int LIMIT; 
+	// a setter function to set counter to 0 
+	if (PMTing->Heartbeat.Flags.VehicleControl == 0) {
+		// check that heartbeat has been set to 0 by processmanagement
+		// if it has, then set it back to 1 
+		PMTing->Heartbeat.Flags.VehicleControl = 1;
+		counter = 0;
+	}
+	else {
+		// if the heartbeat is still 1 
+		// this means processmanagement has dieded and so everything should stop
+		std::cout << "process management is dieded: " << counter << std::endl;
+		counter++;
+		if (counter > LIMIT) {
+			exit(0);
+		}
+	}
 	return 1;
 
 }
-int VehicleControl::manageHB()
-{
-	return 1;
 
+int VehicleControl::setTimer()
+{
+	counter = 0;
+	LIMIT = 10;
+	return 1;
 }
 VehicleControl::~VehicleControl()
 {
-	// YOUR CODE HERE
+	Stream->Close();
+	Client->Close();
 }

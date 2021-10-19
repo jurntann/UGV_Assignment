@@ -17,8 +17,8 @@ public:
 	int setHeartbeat(bool heartbeat) override;
 	int processData() override;
 	int sendData() override;
-	int authData() override;
 	int manageHB() override;
+	int setTimer() override;
 	~VehicleControl();
 
 protected:
@@ -28,4 +28,6 @@ private:
 	SM_VehicleControl* vehicleTing;
 	ProcessManagement* PMTing;
 	String^ SendSignal;
+	int counter;
+	int LIMIT;
 };
