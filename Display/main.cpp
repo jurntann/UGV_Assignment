@@ -206,72 +206,62 @@ double getTime()
 void idle() {
 	if (KeyManager::get()->isAsciiKeyPressed('a')) {
 		Camera::get()->strafeLeft();
-		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
-		car->Speed = speed;
-		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isAsciiKeyPressed('c')) {
 		Camera::get()->strafeDown();
-		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
-		car->Speed = speed;
-		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isAsciiKeyPressed('d')) {
 		Camera::get()->strafeRight();
-		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
-		car->Speed = speed;
-		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isAsciiKeyPressed('s')) {
 		Camera::get()->moveBackward();
-		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
-		car->Speed = speed;
-		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isAsciiKeyPressed('w')) {
 		Camera::get()->moveForward();
-		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
-		car->Speed = speed;
-		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isAsciiKeyPressed(' ')) {
 		Camera::get()->strafeUp();
+	}
+	speed = 0;
+	steering = 0;
+	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
+		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;   
 		// send shared memory over to SM_VehicleControl
 		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
 	}
-	speed = 0;
-	steering = 0;
-	// set back flag to 0, and everything else back to 0 to indicate that you are not controlling the car anymore.
-	car->flag = 0;
-	car->Speed = speed;
-	car->Steering = steering;
-	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
-		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;   
-	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
 		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1;
+		// send shared memory over to SM_VehicleControl
+		car->flag = 1;
+		car->Speed = speed;
+		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP)) {
 		speed = Vehicle::MAX_FORWARD_SPEED_MPS;
+		// send shared memory over to SM_VehicleControl
+		car->flag = 1;
+		car->Speed = speed;
+		car->Steering = steering;
 	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
 		speed = Vehicle::MAX_BACKWARD_SPEED_MPS;
+		// send shared memory over to SM_VehicleControl
+		car->flag = 1;
+		car->Speed = speed;
+		car->Steering = steering;
 	}
+	// set back flag to 0, and everything else back to 0 to indicate that you are not controlling the car anymore.
+	car->flag = 0;
 
 	if (hb->Heartbeat.Flags.Display == 0) {
 		// check that heartbeat has been set to 0 by processmanagement
