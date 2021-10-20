@@ -64,7 +64,7 @@ int main()
 	}
 
 	// limit before action is taken
-	int LIMIT = 10;
+	int LIMIT = 100;
 	// array of counters, if any of the elements reach three then action is taken 
 	std::array<int, 5> counters = { 0,0,0,0,0 }; //Left to right represents processes gps to laser
 	while (!_kbhit()) {
