@@ -67,6 +67,7 @@ int GPS::sendData()
 
 int GPS::sendDataToSharedMemory() 
 {
+	/*
 	unsigned int Header = 0;
 	int i = 0;
 	int Start; //Start of data
@@ -82,6 +83,7 @@ int GPS::sendDataToSharedMemory()
 	{
 		*(BytePtr++) = ReadData[i];
 	}
+	*/
 	return 1;
 }
 bool GPS::getShutdownFlag() 

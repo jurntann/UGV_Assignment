@@ -42,21 +42,32 @@ int VehicleControl::setupSharedMemory()
 }
 int VehicleControl::getData()
 {
+	
 	return 1;
 
 }
 int VehicleControl::sendData()
 {
-	String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString() + " " + vehicleTing->Speed.ToString() + " " + vehicleTing->flag.ToString() + " #");
-	SendData = gcnew array<unsigned char>(16);
-	SendData = Encoding::ASCII->GetBytes(SendSignal);
-	Stream->WriteByte(0x02);
-	Stream->Write(SendData, 0, SendData->Length);
-	Stream->WriteByte(0x03);
+	// only if the flag is up (1), then this function will send data to the robot to move it
+	if (vehicleTing->flag == 1) {
+		String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString() + " " + vehicleTing->Speed.ToString() + " " + vehicleTing->flag.ToString() + " #");
+		SendData = gcnew array<unsigned char>(100); // to confirm size
+		SendData = Encoding::ASCII->GetBytes(SendSignal);
+		Stream->WriteByte(0x02);
+		Stream->Write(SendData, 0, SendData->Length);
+		Stream->WriteByte(0x03);
+	}
 	return 1;
 
 }
-
+int VehicleControl::authData()
+{
+	Message = gcnew String("5261433\n");
+	SendData = gcnew array<unsigned char>(16);
+	SendData = Encoding::ASCII->GetBytes(Message);
+	Stream->Write(SendData, 0, SendData->Length);
+	return 1;
+}
 int VehicleControl::checkData()
 {
 	return 1;
@@ -64,11 +75,16 @@ int VehicleControl::checkData()
 }
 int VehicleControl::sendDataToSharedMemory()
 {
+
 	return 1;
 
 }
 bool VehicleControl::getShutdownFlag()
 {
+	if (PMTing->Shutdown.Status) {
+		std::cout << "terminating program" << std::endl;
+		exit(0);
+	}
 	return 1;
 
 }
@@ -78,11 +94,6 @@ int VehicleControl::setHeartbeat(bool heartbeat)
 
 }
 int VehicleControl::processData()
-{
-	return 1;
-
-}
-int VehicleControl::sendData()
 {
 	return 1;
 
