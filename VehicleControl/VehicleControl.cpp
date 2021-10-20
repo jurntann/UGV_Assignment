@@ -48,15 +48,15 @@ int VehicleControl::getData()
 }
 int VehicleControl::sendData()
 {
-	// only if the flag is up (1), then this function will send data to the robot to move it
-	if (vehicleTing->flag == 1) {
-		String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString() + " " + vehicleTing->Speed.ToString() + " " + vehicleTing->flag.ToString() + " #");
-		SendData = gcnew array<unsigned char>(100); // to confirm size
-		SendData = Encoding::ASCII->GetBytes(SendSignal);
-		Stream->WriteByte(0x02);
-		Stream->Write(SendData, 0, SendData->Length);
-		Stream->WriteByte(0x03);
-	}
+	//
+	vehicleTing->flag = 1;
+	String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString() + " " + vehicleTing->Speed.ToString() + " " + vehicleTing->flag.ToString() + " #");
+	SendData = gcnew array<unsigned char>(100); // to confirm size
+	SendData = Encoding::ASCII->GetBytes(SendSignal);
+	Stream->WriteByte(0x02);
+	Stream->Write(SendData, 0, SendData->Length);
+	Stream->WriteByte(0x03);
+	Console::WriteLine("sent to robot");
 	return 1;
 
 }
@@ -101,7 +101,6 @@ int VehicleControl::processData()
 
 int VehicleControl::manageHB()
 {
-	// timer waiting not implemented yet
 	// method: a counter int and limit int as private members of class
 	// int counter; int LIMIT; 
 	// a setter function to set counter to 0 
@@ -127,7 +126,7 @@ int VehicleControl::manageHB()
 int VehicleControl::setTimer()
 {
 	counter = 0;
-	LIMIT = 10;
+	LIMIT = 100;
 	return 1;
 }
 VehicleControl::~VehicleControl()

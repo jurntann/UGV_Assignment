@@ -229,12 +229,16 @@ void idle() {
 	}
 	speed = 0;
 	steering = 0;
+	car->flag = 0;
+	car->Speed = 0;
+	car->Steering = 0;
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
 		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;   
 		// send shared memory over to SM_VehicleControl
 		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
+		Console::WriteLine("sent1");
 	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
@@ -243,6 +247,7 @@ void idle() {
 		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
+		Console::WriteLine("sent2");
 	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP)) {
@@ -251,6 +256,7 @@ void idle() {
 		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
+		Console::WriteLine("sent3");
 	}
 
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
@@ -259,6 +265,7 @@ void idle() {
 		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
+		Console::WriteLine("sent4");
 	}
 	// set back flag to 0, and everything else back to 0 to indicate that you are not controlling the car anymore.
 	car->flag = 0;
@@ -272,7 +279,7 @@ void idle() {
 	else {
 		// if the heartbeat is still 1 
 		// this means processmanagement has dieded and so everything should stop
-		std::cout << "process management is dieded" << std::endl;
+		//std::cout << "process management is dieded" << std::endl;
 		counter++;
 		if (counter > LIMIT) {
 			exit(0);
