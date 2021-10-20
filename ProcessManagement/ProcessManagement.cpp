@@ -109,7 +109,7 @@ int main()
 			strike++;
 			
 		}
-		Thread::Sleep(25); // allow time for keypress for manual shutdown
+		Thread::Sleep(1000); // allow time for keypress for manual shutdown
 	}
 	PMData->Shutdown.Status = 0xFF;
 	Console::ReadKey();

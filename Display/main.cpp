@@ -277,7 +277,7 @@ void idle() {
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
 		hb->Heartbeat.Flags.Display = 1;
-		Thread::Sleep(25);
+		Thread::Sleep(1000);
 	}
 	else {
 		// if the heartbeat is still 1 
@@ -287,7 +287,7 @@ void idle() {
 		if (counter > LIMIT) {
 			exit(0);
 		}
-		Thread::Sleep(25);
+		Thread::Sleep(1000);
 		
 	}
 

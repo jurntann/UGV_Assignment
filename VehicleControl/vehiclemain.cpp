@@ -36,7 +36,7 @@ int main() {
 		vehicleboi.manageHB();
 		vehicleboi.getShutdownFlag();
 		vehicleboi.sendData();
-		Thread::Sleep(25);
+		Thread::Sleep(1000);
 	}
 	return 0;
 }
