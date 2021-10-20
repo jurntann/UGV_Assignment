@@ -49,7 +49,7 @@ int main()
 	std::string currDir = getcwd(&cwd[0], cwd.capacity());
 	currDir.append("\\..\\Debug");
 	String^ dirString = gcnew String(currDir.c_str());
-	array<String^>^ ModuleList = gcnew array<String^>{"GPS", "Camera", "Display", "Laser_z5261433", "VehicleControl"};
+	array<String^>^ ModuleList = gcnew array<String^>{"GPS_z5261433", "Camera", "Display", "Laser_z5261433", "VehicleControl"};
 	array<int>^ Critical = gcnew array<int>(ModuleList->Length) { 0, 1, 0, 1, 1 };
 	array<Process^>^ ProcessList = gcnew array<Process^>(ModuleList->Length);
 	for (int i = 0; i < ModuleList->Length; i++) {
