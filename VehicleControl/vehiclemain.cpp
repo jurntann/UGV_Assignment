@@ -31,11 +31,15 @@ int main() {
 	vehicleboi.authData();
 
 	Thread::Sleep(10);
+	Console::WriteLine("authenticated");
 
 	while (!_kbhit()) {	
 		vehicleboi.manageHB();
+		Console::WriteLine("heartbeat managed");
 		vehicleboi.getShutdownFlag();
+		Console::WriteLine("shutdown managed");
 		vehicleboi.sendData();
+		Console::WriteLine("sent data to weeder");
 		Thread::Sleep(1000);
 	}
 	return 0;
