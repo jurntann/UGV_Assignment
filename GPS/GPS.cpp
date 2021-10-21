@@ -43,12 +43,17 @@ int GPS::getData()
 {
 	Stream = Client->GetStream();
 	Console::WriteLine("bug");
-	ReadData = gcnew array<unsigned char>(5000);
+	ReadData = gcnew array<unsigned char>(225);
 	//if (Stream->DataAvailable) {
 		Stream->Read(ReadData, 0, ReadData->Length);
+		Thread::Sleep(10);
 		for (int i = 0; i < sizeof(ReadData); i++) {
 			Console::Write("{0:X}", ReadData[i]);
 		}
+		std::cout << sizeof(ReadData) << std::endl;
+	//}
+	//else {
+	//	std::cout << "no data atm" << std::endl;
 	//}
 	return 1;
 }
