@@ -48,14 +48,11 @@ int VehicleControl::getData()
 }
 int VehicleControl::sendData()
 {
-	//
-	vehicleTing->flag = 1;
-	String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString() + " " + vehicleTing->Speed.ToString() + " " + vehicleTing->flag.ToString() + " #");
-	SendData = gcnew array<unsigned char>(100); // to confirm size
+	String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString("F2") + " " + vehicleTing->Speed.ToString("F2") + " " + flag.ToString("D") + " #");
+	flag = 1 - flag;
+	SendData = gcnew array<unsigned char>(16); // to confirm size
 	SendData = Encoding::ASCII->GetBytes(SendSignal);
-	Stream->WriteByte(0x02);
 	Stream->Write(SendData, 0, SendData->Length);
-	Stream->WriteByte(0x03);
 	Console::WriteLine("sent to robot");
 	return 1;
 
@@ -127,6 +124,7 @@ int VehicleControl::setTimer()
 {
 	counter = 0;
 	LIMIT = 100;
+	flag = 0;
 	return 1;
 }
 VehicleControl::~VehicleControl()

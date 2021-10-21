@@ -31,6 +31,7 @@ protected:
 	int counter;
 	int LIMIT;
 	String^ Message;
+	int flag;
 private:
 
 };

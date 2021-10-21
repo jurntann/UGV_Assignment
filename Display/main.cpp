@@ -77,6 +77,7 @@ double steering = 0;
 // Global variables
 ProcessManagement* hb; 
 SM_VehicleControl* car;
+SM_Laser* leser;
 int counter = 0;
 int LIMIT = 5000; // ideally four times more than the other modules since the thread sleep is 4 times shorter than other modules
 
@@ -97,6 +98,14 @@ int main(int argc, char ** argv) {
 	VehicleObj.SMAccess();
 	SM_VehicleControl* VehicleData = (SM_VehicleControl*)VehicleObj.pData;
 	car = VehicleData;
+
+	// Declare an SM Object instance
+	SMObject LaserObj(TEXT("Laser"), sizeof(SM_Laser));
+	// SM Creation and seeking access
+	LaserObj.SMCreate();
+	LaserObj.SMAccess();
+	SM_Laser* LaserData = (SM_Laser*)LaserObj.pData;
+	leser = LaserData;
 
 	const int WINDOW_WIDTH = 800;
 	const int WINDOW_HEIGHT = 600;
@@ -229,13 +238,11 @@ void idle() {
 	}
 	speed = 0;
 	steering = 0;
-	car->flag = 0;
 	car->Speed = 0;
 	car->Steering = 0;
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_LEFT)) {
 		steering = Vehicle::MAX_LEFT_STEERING_DEGS * -1;   
 		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
 		Console::WriteLine("sent1");
@@ -244,7 +251,6 @@ void idle() {
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_RIGHT)) {
 		steering = Vehicle::MAX_RIGHT_STEERING_DEGS * -1;
 		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
 		Console::WriteLine("sent2");
@@ -253,7 +259,6 @@ void idle() {
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_UP)) {
 		speed = Vehicle::MAX_FORWARD_SPEED_MPS;
 		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
 		Console::WriteLine("sent3");
@@ -262,13 +267,10 @@ void idle() {
 	if (KeyManager::get()->isSpecialKeyPressed(GLUT_KEY_DOWN)) {
 		speed = Vehicle::MAX_BACKWARD_SPEED_MPS;
 		// send shared memory over to SM_VehicleControl
-		car->flag = 1;
 		car->Speed = speed;
 		car->Steering = steering;
 		Console::WriteLine("sent4");
 	}
-	// set back flag to 0, and everything else back to 0 to indicate that you are not controlling the car anymore.
-	car->flag = 0;
 
 	if (hb->Heartbeat.Flags.Display == 0) {
 		// check that heartbeat has been set to 0 by processmanagement

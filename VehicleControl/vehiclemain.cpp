@@ -32,6 +32,7 @@ int main() {
 
 	Thread::Sleep(10);
 	Console::WriteLine("authenticated");
+	vehicleboi.setTimer();
 
 	while (!_kbhit()) {	
 		vehicleboi.manageHB();
