@@ -42,8 +42,10 @@ int GPS::setupSharedMemory()
 int GPS::getData() 
 {
 	Stream = Client->GetStream();
-	ReadData = gcnew array<unsigned char>(5000);
+	if (Stream->DataAvailable) {
+	ReadData = gcnew array<unsigned char>(5000);	
 	Stream->Read(ReadData, 0, ReadData->Length);
+	}
 	return 1;
 }
 int GPS::checkData() 
@@ -87,11 +89,14 @@ int GPS::sendDataToSharedMemory()
 
 	}
 	valueCRC_CALC = CalculateBlockCRC32(108, checker);
-	if (GPSTing->Checksum == valueCRC_CALC) {
+	if (GPSTing->Checksum == (int)valueCRC_CALC) {
 		Console::WriteLine("ok");
 	}
 	else {
 		Console::WriteLine("not ok");
+		std::cout << " VALUE OF CALCULATED: " << (int)valueCRC_CALC << std::endl;
+		std::cout << " VALUE OF given by data stream: " << GPSTing->Checksum << std::endl;
+
 	}
 	return 1;
 }
