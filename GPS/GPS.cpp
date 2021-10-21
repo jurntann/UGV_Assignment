@@ -67,23 +67,37 @@ int GPS::sendData()
 
 int GPS::sendDataToSharedMemory() 
 {
-	/*
 	unsigned int Header = 0;
+	unsigned char data;
 	int i = 0;
 	int Start; //Start of data
+	unsigned char checksum[108];
 	do
 	{
 		data = ReadData[i++]; // need help 
-		Header = ((Header << 8) || data);
+		Header = ((Header << 8) | data);
 	} while (Header != 0xaa44121c);
 	Start = i - 4;
 	unsigned char* BytePtr = nullptr;
-	BytePtr = (unsigned char*) &GPSTing;
+	BytePtr = (unsigned char*)GPSTing;
+	int gedit = 0;
 	for (int i = Start; i < Start + sizeof(SM_GPS); i++)
 	{
+		// get last four bytes of gps data which is an int that is used for CRC32VALUE
+		if (i == Start + sizeof(SM_GPS) - 4) {
+			gedit++;
+		}
 		*(BytePtr++) = ReadData[i];
+
 	}
-	*/
+	valueCRC_CALC = CalculateBlockCRC32(108, BytePtr);
+	valueCRC_GIVEN = CRC32Value(gedit);
+	if (valueCRC_CALC == valueCRC_GIVEN) {
+		Console::WriteLine("all ok");
+	}
+	else {
+		Console::WriteLine("not ok bro");
+	}
 	return 1;
 }
 bool GPS::getShutdownFlag() 
