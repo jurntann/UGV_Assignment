@@ -44,24 +44,18 @@ int GPS::getData()
 	Stream = Client->GetStream();
 	ReadData = gcnew array<unsigned char>(5000);
 	Stream->Read(ReadData, 0, ReadData->Length);
-	data = Encoding::ASCII->GetString(ReadData);
-	Console::WriteLine(data); //(remove when it works)
 	return 1;
 }
 int GPS::checkData() 
 {
-	// YOUR CODE HERE
+	std::cout << "Northing: " << GPSTing->northing << std::endl;
+	std::cout << "Easting: " << GPSTing->easting << std::endl;
+	std::cout << "Height: " << GPSTing->height << std::endl;
 	return 1;
 }
 
 int GPS::sendData()
-{ // self written function much wow
-	SendData = gcnew array<unsigned char>(16);
-	SendData = Encoding::ASCII->GetBytes(AskScan);
-	Stream->WriteByte(0x02);
-	Stream->Write(SendData, 0, SendData->Length);
-	Stream->WriteByte(0x03);
-	// YOUR CODE HERE
+{ 
 	return 1;
 }
 
@@ -72,6 +66,7 @@ int GPS::sendDataToSharedMemory()
 	int i = 0;
 	int Start; //Start of data
 	unsigned char checker[108];
+	unsigned char checker2[4];
 	do
 	{
 		data = ReadData[i++]; // need help 
@@ -81,16 +76,22 @@ int GPS::sendDataToSharedMemory()
 	unsigned char* BytePtr = nullptr;
 	BytePtr = (unsigned char*)GPSTing;
 	int gedit = 0;
+	int j = 0;
 	for (int i = Start; i < Start + sizeof(SM_GPS); i++)
 	{
 		// get last four bytes of gps data which is an int that is used for CRC32VALUE
-		if (i == Start + sizeof(SM_GPS) - 4) {
+		if (i > Start + sizeof(SM_GPS) - 4) {
+			checker2[gedit] = ReadData[i];
 			gedit++;
+		}
+		else {
+			checker[j] = ReadData[i];
+			j++;
 		}
 		*(BytePtr++) = ReadData[i];
 
 	}
-	valueCRC_CALC = CalculateBlockCRC32(108, BytePtr);
+	valueCRC_CALC = CalculateBlockCRC32(108, checker);
 	return 1;
 }
 bool GPS::getShutdownFlag() 
