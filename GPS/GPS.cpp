@@ -91,13 +91,6 @@ int GPS::sendDataToSharedMemory()
 
 	}
 	valueCRC_CALC = CalculateBlockCRC32(108, BytePtr);
-	valueCRC_GIVEN = CRC32Value(gedit);
-	if (valueCRC_CALC == valueCRC_GIVEN) {
-		Console::WriteLine("all ok");
-	}
-	else {
-		Console::WriteLine("not ok bro");
-	}
 	return 1;
 }
 bool GPS::getShutdownFlag() 

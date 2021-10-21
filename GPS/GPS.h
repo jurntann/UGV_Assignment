@@ -46,7 +46,6 @@ private:
 	double Height;
 	String^ AskScan;
 	unsigned long valueCRC_CALC;
-	unsigned long valueCRC_GIVEN;
 
 };
 
