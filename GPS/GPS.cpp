@@ -75,16 +75,11 @@ int GPS::sendDataToSharedMemory()
 	Start = i - 4;
 	unsigned char* BytePtr = nullptr;
 	BytePtr = (unsigned char*)GPSTing;
-	int gedit = 0;
 	int j = 0;
 	for (int i = Start; i < Start + sizeof(SM_GPS); i++)
 	{
 		// get last four bytes of gps data which is an int that is used for CRC32VALUE
-		if (i > Start + sizeof(SM_GPS) - 4) {
-			checker2[gedit] = ReadData[i];
-			gedit++;
-		}
-		else {
+		if (i < Start + sizeof(SM_GPS) - 4) {
 			checker[j] = ReadData[i];
 			j++;
 		}
@@ -92,6 +87,12 @@ int GPS::sendDataToSharedMemory()
 
 	}
 	valueCRC_CALC = CalculateBlockCRC32(108, checker);
+	if (GPSTing->Checksum == valueCRC_CALC) {
+		Console::WriteLine("ok");
+	}
+	else {
+		Console::WriteLine("not ok");
+	}
 	return 1;
 }
 bool GPS::getShutdownFlag() 
