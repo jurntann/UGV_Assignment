@@ -42,10 +42,14 @@ int GPS::setupSharedMemory()
 int GPS::getData() 
 {
 	Stream = Client->GetStream();
-	if (Stream->DataAvailable) {
-	ReadData = gcnew array<unsigned char>(5000);	
-	Stream->Read(ReadData, 0, ReadData->Length);
-	}
+	Console::WriteLine("bug");
+	ReadData = gcnew array<unsigned char>(5000);
+	//if (Stream->DataAvailable) {
+		Stream->Read(ReadData, 0, ReadData->Length);
+		for (int i = 0; i < sizeof(ReadData); i++) {
+			Console::Write("{0:X}", ReadData[i]);
+		}
+	//}
 	return 1;
 }
 int GPS::checkData() 

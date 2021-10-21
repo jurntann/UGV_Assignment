@@ -33,6 +33,7 @@ private:
 	ProcessManagement* PMTing;
 	String^ Message; // characters that can be read
 	String^ data;
+	String^ bruh;
 	array<double>^ Range;
 	array<double>^ RangeX;
 	array<double>^ RangeY;
