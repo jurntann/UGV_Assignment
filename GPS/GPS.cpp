@@ -71,7 +71,7 @@ int GPS::sendDataToSharedMemory()
 	unsigned char data;
 	int i = 0;
 	int Start; //Start of data
-	unsigned char checksum[108];
+	unsigned char checker[108];
 	do
 	{
 		data = ReadData[i++]; // need help 
