@@ -145,3 +145,20 @@ void MyVehicle::draw()
 
 	glPopMatrix();
 }
+/*
+void MyVehicle::drawLASER()
+{
+
+	for (int i = 0; i < 361; i++) {
+		XPoints[i] = laserTing->x[i];
+		YPoints[i] = laserTing->y[i];
+		glPushMatrix();
+		glBegin(GL_POLYGON);
+			glVertex3fv(XPoints[i]);
+			glVertex3fv(YPoints[i]);
+		glEnd();
+
+		glPopMatrix();
+	}
+}
+*/
