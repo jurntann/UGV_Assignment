@@ -90,11 +90,6 @@ int VehicleControl::setHeartbeat(bool heartbeat)
 	return 1;
 
 }
-int VehicleControl::processData()
-{
-	return 1;
-
-}
 
 int VehicleControl::manageHB()
 {

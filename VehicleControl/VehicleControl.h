@@ -15,7 +15,6 @@ public:
 	int sendDataToSharedMemory() override;
 	bool getShutdownFlag()override;
 	int setHeartbeat(bool heartbeat) override;
-	int processData() override;
 	int manageHB() override;
 	int setTimer() override;
 	int authData() override;
@@ -24,7 +23,6 @@ public:
 protected:
 	// YOUR CODE HERE (ADDITIONAL MEMBER VARIABLES THAT YOU MAY WANT TO ADD)
 	array<unsigned char>^ SendData;
-	array<unsigned char>^ ReadData;
 	SM_VehicleControl* vehicleTing;
 	ProcessManagement* PMTing;
 	String^ SendSignal;

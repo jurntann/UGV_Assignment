@@ -1,4 +1,4 @@
-#pragma pack(1)
+
 
 #ifndef SMSTRUCTS_H
 #define SMSTRUCTS_H
@@ -31,6 +31,7 @@ struct SM_VehicleControl
 	double Steering;
 };
 
+#pragma pack(push,1)
 struct SM_GPS // 112 bytes
 {
 	unsigned int Header;
@@ -41,7 +42,7 @@ struct SM_GPS // 112 bytes
 	unsigned char Discards2[40];
 	unsigned int Checksum;
 };
-
+#pragma pack(pop)
 struct UnitFlags
 {
 	unsigned char	GPS : 1,	//NONCRITICAL
