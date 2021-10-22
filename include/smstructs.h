@@ -1,4 +1,4 @@
-
+#pragma once
 
 #ifndef SMSTRUCTS_H
 #define SMSTRUCTS_H
