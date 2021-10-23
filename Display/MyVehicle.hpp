@@ -11,10 +11,10 @@ public:
 	MyVehicle();
 	virtual void draw();
 // edited: added drawLASER and data variables 	
-	virtual void drawLASER();
+	//virtual void drawLASER();
 
 private: 
-	SM_Laser* laserTing;
+	//SM_Laser* laserTing;
 	/*
 	array<double> XPoints;
 	array<double> YPoints;

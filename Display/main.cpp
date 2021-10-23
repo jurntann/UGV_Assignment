@@ -180,6 +180,10 @@ void display() {
 
 
 	// draw HUD
+	HUD Headsup;
+	Headsup.setupSharedMemory();
+	Headsup.setVar();
+	Headsup.DrawJorn();
 	HUD::Draw();
 
 	glutSwapBuffers();

@@ -154,3 +154,64 @@ void HUD::Draw()
 
 	Camera::get()->switchTo3DDrawing();
 }
+
+// my own stuff
+void HUD::DrawJorn() {
+	Camera::get()->switchTo2DDrawing();
+	int winWidthOff = (Camera::get()->getWindowWidth() - 800) * .5;
+	if (winWidthOff < 0)
+		winWidthOff = 0;
+
+	if (vehicle) {
+		// my own stuff
+		glColor3f(0, 0, 1);
+		DrawGPS(200 + winWidthOff, 250, 210, -40, 40, northing, "Northing");
+		glColor3f(0, 0, 1);
+		DrawGPS(400 + winWidthOff, 250, 210, -40, 40, easting, "Easting");
+		glColor3f(0, 0, 1);
+		DrawGPS(600 + winWidthOff, 250, 210, -40, 40, height, "Height");
+	}
+
+	Camera::get()->switchTo3DDrawing();
+}
+int HUD::setupSharedMemory()
+{
+	SensorData = new SMObject(TEXT("GPS"), sizeof(SM_GPS));
+	// SM Creation and seeking access for LASER SHARED MEMORY
+	SensorData->SMCreate();
+	SensorData->SMAccess();
+	GPSTing2 = (SM_GPS*)SensorData->pData;
+	return 1;
+}
+
+void HUD::setVar()
+{
+	northing = GPSTing2->northing;
+	easting = GPSTing2->easting;
+	height = GPSTing2->height;
+
+}
+
+void HUD::DrawGPS(double x, double y, double r, double min, double max, double val, const char* label)
+{
+	glPushMatrix();
+	double r1 = r;
+	double r2 = r * 1.05;
+
+	const double centerR = -90;
+	const double startR = centerR - 50;
+	const double endR = centerR + 50;
+
+	glTranslatef(x, y, 0);
+	glDisable(GL_LIGHTING);
+
+	y = sin((startR)*DEGTORAD);
+	// draw label
+	char buff[80];
+	sprintf(buff, "%.0f", min);
+	RenderString(label, strlen(label) * 10 * -.25, (r1 - 20) * y - 20, GLUT_BITMAP_HELVETICA_10);
+	// draw text value
+	sprintf(buff, "%.1f", val);
+	RenderString(buff, strlen(buff) * 18 * -.25, (r1 - 20) * y - 5, GLUT_BITMAP_HELVETICA_18);
+	glPopMatrix();
+}
