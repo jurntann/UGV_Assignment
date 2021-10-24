@@ -151,11 +151,12 @@ void MyVehicle::drawLASER(double x, double y, double z)
 	float fx = float(x);
 	float fy = float(y);
 	float fz = float(z);
-	glBegin(GL_POLYGON);
+	glBegin(GL_LINES);
+	//glBegin(GL_POLYGON);
 	glColor3f(1, 1, 1);
-	//glVertex3f((GLfloat)fx, (GLfloat)fy, (GLfloat)fz);
-	glVertex3fv((const GLfloat*)&fx);
-	glVertex3fv((const GLfloat*)&fy);
-	glVertex3fv((const GLfloat*)&fz);
+	glVertex3f((GLfloat)fx, (GLfloat)fy, (GLfloat)fz);
+	//glVertex3fv((const GLfloat*)&fx);
+	//glVertex3fv((const GLfloat*)&fy);
+	//glVertex3fv((const GLfloat*)&fz);
 	glEnd();
 }
