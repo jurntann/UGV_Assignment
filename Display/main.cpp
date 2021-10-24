@@ -174,6 +174,9 @@ void display() {
 	// draw my vehicle
 	if (vehicle != NULL) {
 		vehicle->draw();
+		for (int i = 0; i < 361; i++) {
+			vehicle->drawLASER(leser->x[i], leser->y[i], 1.0);
+		}
 
 	}
 
@@ -275,9 +278,9 @@ void idle() {
 		Console::WriteLine("sent4");
 	}
 	// Display Laser Data
-	for (int i = 0; i < 361; i++) {
-		vehicle->drawLASER(leser->x[i],leser->y[i]);
-	}
+	//for (int i = 0; i < 361; i++) {
+	//	vehicle->drawLASER(leser->x[i],leser->y[i],100.0);
+	//}
 	// Heartbeat stuff
 	if (hb->Heartbeat.Flags.Display == 0) {
 		// check that heartbeat has been set to 0 by processmanagement

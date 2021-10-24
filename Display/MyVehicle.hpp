@@ -11,7 +11,7 @@ public:
 	MyVehicle();
 	virtual void draw();
 // edited: added drawLASER and data variables 	
-	virtual void drawLASER(double x, double y);
+	virtual void drawLASER(double x, double y, double z);
 };
 
 #endif
