@@ -1,6 +1,7 @@
 #include "HUD.hpp"
 #include "Camera.hpp"
 #include "Vehicle.hpp"
+#include "MyVehicle.hpp"
 
 #ifdef __APPLE__
 	#include <OpenGL/gl.h>
@@ -28,7 +29,7 @@
 #include <map>
 
 
-extern Vehicle * vehicle;
+extern MyVehicle * vehicle;
 
 using namespace scos;
 

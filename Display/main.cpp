@@ -70,7 +70,7 @@ int prev_mouse_x = -1;
 int prev_mouse_y = -1;
 
 // vehicle control related variables
-Vehicle * vehicle = NULL;
+MyVehicle * vehicle = NULL; // change to myVehicle
 double speed = 0;
 double steering = 0;
 
@@ -139,7 +139,6 @@ int main(int argc, char ** argv) {
 	//   custom vehicle.
 	// -------------------------------------------------------------------------
 	vehicle = new MyVehicle();
-
 
 	glutMainLoop();
 
@@ -275,7 +274,11 @@ void idle() {
 		car->Steering = steering;
 		Console::WriteLine("sent4");
 	}
-
+	// Display Laser Data
+	for (int i = 0; i < 361; i++) {
+		vehicle->drawLASER(leser->x[i],leser->y[i]);
+	}
+	// Heartbeat stuff
 	if (hb->Heartbeat.Flags.Display == 0) {
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
