@@ -154,7 +154,9 @@ void MyVehicle::drawLASER(double x, double y, double z)
 	glBegin(GL_LINES);
 	//glBegin(GL_POLYGON);
 	glColor3f(1, 1, 1);
-	glVertex3f((GLfloat)fx, (GLfloat)fy, (GLfloat)fz);
+	glLineWidth(1);
+	glVertex3f((GLfloat)fx,fz,-(GLfloat)fy);
+	glVertex3f((GLfloat)fx,fz-1, -(GLfloat)fy);
 	//glVertex3fv((const GLfloat*)&fx);
 	//glVertex3fv((const GLfloat*)&fy);
 	//glVertex3fv((const GLfloat*)&fz);

@@ -175,7 +175,7 @@ void display() {
 	if (vehicle != NULL) {
 		vehicle->draw();
 		for (int i = 0; i < 361; i++) {
-			vehicle->drawLASER(leser->x[i], leser->y[i], 1.0);
+			vehicle->drawLASER(leser->x[i],leser->y[i],0);
 		}
 
 	}
