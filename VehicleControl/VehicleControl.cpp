@@ -49,6 +49,7 @@ int VehicleControl::getData()
 int VehicleControl::sendData()
 {
 	String^ SendSignal = gcnew String("# " + vehicleTing->Steering.ToString("F2") + " " + vehicleTing->Speed.ToString("F2") + " " + flag.ToString("D") + " #");
+	Console::WriteLine(SendSignal);
 	flag = 1 - flag;
 	SendData = gcnew array<unsigned char>(16); // to confirm size
 	SendData = Encoding::ASCII->GetBytes(SendSignal);
