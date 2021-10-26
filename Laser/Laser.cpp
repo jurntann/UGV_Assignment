@@ -102,8 +102,15 @@ int Laser::processData()
 }
 int Laser::checkData()
 {
-	// YOUR CODE HERE
-	return 1;
+	array<wchar_t>^ Space = { ' ' };
+	array<String^>^ StringArray = data->Split(Space);
+	ScanMessage = gcnew String("LMDscandata");
+	if (StringArray[2] == ScanMessage) {
+		return 1;
+	}
+	else {
+		return 0;
+	}
 }
 int Laser::sendDataToSharedMemory()
 {

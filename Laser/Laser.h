@@ -30,6 +30,7 @@ private:
 	ProcessManagement* PMTing;
 	String^ Message; // characters that can be read
 	String^ AskScan;
+	String^ ScanMessage;
 	String^ data;
 	array<double>^ Range;
 	array<double>^ RangeX;
