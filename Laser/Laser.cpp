@@ -84,17 +84,20 @@ int Laser::processData()
 		Console::WriteLine("Bad String  " + data);
 		IntData = 0;
 	}
-	Console::WriteLine("{0,12:D3} ", IntData);double StartAngle = System::Convert::ToInt32(StringArray[23], 16);
-	double Resolution = System::Convert::ToInt32(StringArray[24], 16) / 10000.0;
-	int NumRanges = System::Convert::ToInt32(StringArray[25], 16);
-	Range = gcnew array<double>(NumRanges);
-	RangeX = gcnew array<double>(NumRanges);
-	RangeY = gcnew array<double>(NumRanges);
-	for (int i = 0; i < NumRanges; i++) {
-		Range[i] = System::Convert::ToInt32(StringArray[26 + i], 16);
-		RangeX[i] = Range[i] * sin(i * Resolution / 180 * 3.14)/1000.0;
-		RangeY[i] = -Range[i] * cos(i * Resolution / 180 * 3.14)/1000.0;
-	}
+	Console::WriteLine("{0,12:D3} ", IntData);
+	//if (IntData == 0 || IntData != 0) {
+		double StartAngle = System::Convert::ToInt32(StringArray[23], 16);
+		double Resolution = System::Convert::ToInt32(StringArray[24], 16) / 10000.0;
+		int NumRanges = System::Convert::ToInt32(StringArray[25], 16);
+		Range = gcnew array<double>(NumRanges);
+		RangeX = gcnew array<double>(NumRanges);
+		RangeY = gcnew array<double>(NumRanges);
+		for (int i = 0; i < NumRanges; i++) {
+			Range[i] = System::Convert::ToInt32(StringArray[26 + i], 16);
+			RangeX[i] = Range[i] * sin(i * Resolution / 180 * 3.14) / 1000.0;
+			RangeY[i] = -Range[i] * cos(i * Resolution / 180 * 3.14) / 1000.0;
+		}
+	//}
 	return 1;
 }
 int Laser::checkData()
