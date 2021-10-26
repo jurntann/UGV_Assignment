@@ -156,7 +156,7 @@ int GPS::manageHB()
 int GPS::setTimer()
 {
 	counter = 0;
-	LIMIT = 10;
+	LIMIT = 1000;
 	return 1;
 }
 GPS::~GPS()

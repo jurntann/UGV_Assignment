@@ -27,7 +27,7 @@ int main() {
 		Console::WriteLine("sent to shared memory");
 		GPSboi.checkData();
 		Console::WriteLine("data printed");
-		Thread::Sleep(1000);
+		Thread::Sleep(25);
 	}
 	return 0;
 }

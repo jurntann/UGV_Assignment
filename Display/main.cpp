@@ -79,7 +79,7 @@ ProcessManagement* hb;
 SM_VehicleControl* car;
 SM_Laser* leser;
 int counter = 0;
-int LIMIT = 100; // ideally four times more than the other modules since the thread sleep is 4 times shorter than other modules
+int LIMIT = 1000; // ideally four times more than the other modules since the thread sleep is 4 times shorter than other modules
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
