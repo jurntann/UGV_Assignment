@@ -79,7 +79,7 @@ ProcessManagement* hb;
 SM_VehicleControl* car;
 SM_Laser* leser;
 int counter = 0;
-int LIMIT = 1000; // ideally four times more than the other modules since the thread sleep is 4 times shorter than other modules
+int LIMIT = 500; // ideally four times more than the other modules since the thread sleep is 4 times shorter than other modules
 
 //int _tmain(int argc, _TCHAR* argv[]) {
 int main(int argc, char ** argv) {
@@ -286,7 +286,7 @@ void idle() {
 		// check that heartbeat has been set to 0 by processmanagement
 		// if it has, then set it back to 1 
 		hb->Heartbeat.Flags.Display = 1;
-		Thread::Sleep(25);
+		Thread::Sleep(50);
 	}
 	else {
 		// if the heartbeat is still 1 
@@ -296,7 +296,7 @@ void idle() {
 		if (counter > LIMIT) {
 			exit(0);
 		}
-		Thread::Sleep(25);
+		Thread::Sleep(50);
 		
 	}
 

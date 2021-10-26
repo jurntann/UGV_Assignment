@@ -41,7 +41,7 @@ int main() {
 		Console::WriteLine("shutdown managed");
 		vehicleboi.sendData();
 		Console::WriteLine("sent data to weeder");
-		Thread::Sleep(25);
+		Thread::Sleep(50);
 	}
 	return 0;
 }

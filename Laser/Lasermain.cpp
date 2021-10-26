@@ -64,7 +64,7 @@ int main() {
 		}
 		*/
 
-		Thread::Sleep(25);		
+		Thread::Sleep(50);		
 	}
 	return 0;
 }

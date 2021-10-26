@@ -16,6 +16,7 @@ int main() {
 	String^ hostName = "192.168.1.200";
 	GPSboi.connect(hostName, PortNumber);
 	Console::WriteLine("connected");
+	GPSboi.setTimer();
 	while (!_kbhit()) {
 		GPSboi.manageHB();
 		Console::WriteLine("managed hb");
@@ -27,7 +28,7 @@ int main() {
 		Console::WriteLine("sent to shared memory");
 		GPSboi.checkData();
 		Console::WriteLine("data printed");
-		Thread::Sleep(25);
+		Thread::Sleep(50);
 	}
 	return 0;
 }

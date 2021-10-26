@@ -46,7 +46,6 @@ int Laser::getData()
 	ReadData = gcnew array<unsigned char>(5000);
 	Stream->Read(ReadData, 0, ReadData->Length);
 	data = Encoding::ASCII->GetString(ReadData);
-	Console::WriteLine(data); //(remove when it works)
 	// YOUR CODE HERE
 	return 1;
 }
@@ -83,6 +82,7 @@ int Laser::processData()
 	{
 		Console::WriteLine("Bad String  " + data);
 		IntData = 0;
+		Console::ReadKey();
 	}
 	Console::WriteLine("{0,12:D3} ", IntData);
 	//if (IntData == 0 || IntData != 0) {
@@ -160,7 +160,7 @@ int Laser::manageHB()
 int Laser::setTimer()
 {
 	counter = 0;
-	LIMIT = 1000;
+	LIMIT = 500;
 	return 1;
 }
 Laser::~Laser()

@@ -26,7 +26,7 @@ void idle();
 // Global variables
 ProcessManagement* camhb;
 int counter = 0;
-int LIMIT = 1000;
+int LIMIT = 500;
 
 GLuint tex;
 
@@ -116,7 +116,7 @@ void idle()
 		// if it has, then set it back to 1 
 		camhb->Heartbeat.Flags.Camera = 1;
 		std::cout << "heartbeat changed" << std::endl;
-		Thread::Sleep(25);
+		Thread::Sleep(50);
 	}
 	else {
 		// if the heartbeat is still 1 
@@ -126,7 +126,7 @@ void idle()
 		if (counter > LIMIT) {
 			exit(0);
 		}
-		Thread::Sleep(25);
+		Thread::Sleep(50);
 	}
 	if (camhb->Shutdown.Status) {
 		std::cout << "terminating program" << std::endl;

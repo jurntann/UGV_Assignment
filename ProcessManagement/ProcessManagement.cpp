@@ -64,7 +64,7 @@ int main()
 	}
 
 	// limit before action is taken
-	int LIMIT = 400;
+	int LIMIT = 1000;
 	// array of counters, if any of the elements reach three then action is taken 
 	std::array<int, 5> counters = { 0,0,0,0,0 }; //Left to right represents processes gps to laser
 	while (!_kbhit()) {
@@ -109,7 +109,7 @@ int main()
 			strike++;
 			
 		}
-		Thread::Sleep(25); // allow time for keypress for manual shutdown
+		Thread::Sleep(50); // allow time for keypress for manual shutdown
 	}
 	PMData->Shutdown.Status = 0xFF;
 	Console::ReadKey();

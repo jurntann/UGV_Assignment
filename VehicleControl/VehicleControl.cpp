@@ -119,7 +119,7 @@ int VehicleControl::manageHB()
 int VehicleControl::setTimer()
 {
 	counter = 0;
-	LIMIT = 1000;
+	LIMIT = 500;
 	flag = 0;
 	return 1;
 }

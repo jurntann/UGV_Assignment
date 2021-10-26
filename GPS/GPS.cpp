@@ -44,7 +44,7 @@ int GPS::getData()
 	Stream = Client->GetStream();
 	Console::WriteLine("hello");
 	ReadData = gcnew array<unsigned char>(2500);
-	Thread::Sleep(100);
+	//Thread::Sleep(100);
 	//if (Stream->DataAvailable) {
 		Stream->Read(ReadData, 0, ReadData->Length);
 		//Console::WriteLine("ma man");
@@ -156,7 +156,7 @@ int GPS::manageHB()
 int GPS::setTimer()
 {
 	counter = 0;
-	LIMIT = 1000;
+	LIMIT = 500;
 	return 1;
 }
 GPS::~GPS()
