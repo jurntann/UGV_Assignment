@@ -18,9 +18,9 @@ int GPS::connect(String^ hostName, int portNumber)
 	//Configure client
 	Client->NoDelay = true;
 	Client->ReceiveTimeout = 500; // wait 500 ms before reporting error
-	Client->SendTimeout = 500;
-	Client->ReceiveBufferSize = 1024; // when data comes, set aside 1kb of memory to store data
-	Client->SendBufferSize = 1024;
+	//Client->SendTimeout = 500;
+	Client->ReceiveBufferSize = 256; // when data comes, set aside 1kb of memory to store data
+	//Client->SendBufferSize = 1024;
 	Stream = Client->GetStream();
 	return 1;
 }
