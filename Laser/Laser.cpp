@@ -105,7 +105,7 @@ int Laser::checkData()
 	array<wchar_t>^ Space = { ' ' };
 	array<String^>^ StringArray = data->Split(Space);
 	ScanMessage = gcnew String("LMDscandata");
-	if (StringArray[2] == ScanMessage && StringArray->Length > 361) {
+	if (StringArray->Length > 361) {
 		return 1;
 	}
 	else {
