@@ -18,9 +18,9 @@ int main() {
 	Console::WriteLine("connected");
 	GPSboi.setTimer();
 	while (!_kbhit()) {
-		//GPSboi.manageHB();
+		GPSboi.manageHB();
 		Console::WriteLine("managed hb");
-		//GPSboi.getShutdownFlag();
+		GPSboi.getShutdownFlag();
 		Console::WriteLine("managed shutdown");
 		GPSboi.getData();
 		Console::WriteLine("got data");
