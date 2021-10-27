@@ -51,7 +51,9 @@ int main() {
 			Console::WriteLine("process data");
 			Laserboi.sendDataToSharedMemory();
 			Console::WriteLine("sent to shared memory data");
-		} 
+		} else {
+			Console::WriteLine("nah bro it aint");
+		}
 		/*Heartbeat stuff
 		if (PMData->Heartbeat.Flags.Laser == 0) {
 			// check that heartbeat has been set to 0 by processmanagement

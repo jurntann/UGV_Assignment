@@ -74,6 +74,7 @@ int Laser::processData()
 	array<wchar_t>^ Space = { ' ' };
 	array<String^>^ StringArray = data->Split(Space);
 	int IntData;
+	/*
 	try
 	{
 		IntData = System::Convert::ToInt32(data, 16);
@@ -84,7 +85,8 @@ int Laser::processData()
 		IntData = 0;
 		Console::ReadKey();
 	}
-	Console::WriteLine("{0,12:D3} ", IntData);
+	*/
+	//Console::WriteLine("{0,12:D3} ", IntData);
 	//if (IntData == 0 || IntData != 0) {
 		double StartAngle = System::Convert::ToInt32(StringArray[23], 16);
 		double Resolution = System::Convert::ToInt32(StringArray[24], 16) / 10000.0;
@@ -106,9 +108,11 @@ int Laser::checkData()
 	array<String^>^ StringArray = data->Split(Space);
 	ScanMessage = gcnew String("LMDscandata");
 	if (StringArray->Length > 361) {
+		Console::WriteLine("okboi");
 		return 1;
 	}
 	else {
+		Console::WriteLine("this happens");
 		return 0;
 	}
 }
