@@ -17,7 +17,7 @@ int GPS::connect(String^ hostName, int portNumber)
 	Client = gcnew TcpClient(hostName, portNumber);
 	//Configure client
 	Client->NoDelay = true;
-	Client->ReceiveTimeout = 500; // wait 500 ms before reporting error
+	Client->ReceiveTimeout = 5000; // wait 500 ms before reporting error
 	//Client->SendTimeout = 500;
 	Client->ReceiveBufferSize = 256; // when data comes, set aside 1kb of memory to store data
 	//Client->SendBufferSize = 1024;

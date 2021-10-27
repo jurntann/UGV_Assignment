@@ -17,7 +17,7 @@ int Laser::connect(String^ hostName, int portNumber)
 	Client = gcnew TcpClient(hostName, portNumber);
 	//Configure client
 	Client->NoDelay = true;
-	Client->ReceiveTimeout = 500; // wait 500 ms before reporting error
+	Client->ReceiveTimeout = 5000; // wait 500 ms before reporting error
 	Client->SendTimeout = 500;
 	Client->ReceiveBufferSize = 1024; // when data comes, set aside 1kb of memory to store data
 	Client->SendBufferSize = 1024;
@@ -74,7 +74,7 @@ int Laser::processData()
 	array<wchar_t>^ Space = { ' ' };
 	array<String^>^ StringArray = data->Split(Space);
 	int IntData;
-	/*
+	
 	try
 	{
 		IntData = System::Convert::ToInt32(data, 16);
@@ -83,10 +83,10 @@ int Laser::processData()
 	{
 		Console::WriteLine("Bad String  " + data);
 		IntData = 0;
-		Console::ReadKey();
+		//Console::ReadKey();
 	}
-	*/
-	//Console::WriteLine("{0,12:D3} ", IntData);
+	
+	Console::WriteLine("{0,12:D3} ", IntData);
 	//if (IntData == 0 || IntData != 0) {
 		double StartAngle = System::Convert::ToInt32(StringArray[23], 16);
 		double Resolution = System::Convert::ToInt32(StringArray[24], 16) / 10000.0;
